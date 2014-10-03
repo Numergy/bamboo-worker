@@ -3,8 +3,9 @@ AllCops:
     - '**/Gemfile'
     - lib/**/*
     - spec/**/*
-    - gemirro.gemspec
+    - bamboo-worker.gemspec
   Exclude:
+    - bin/**/*
     - files/**/*
     - templates/**/*
 MethodLength:

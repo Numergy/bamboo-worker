@@ -1,1 +1,7 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 
+require File.expand_path('../../lib/bamboo-worker', __FILE__)
+
+options = BambooWorker::CLI.options
+puts options if options.parse.empty?

@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 require 'erubis'
+require 'slop'
 require 'travis/yaml'
 
 unless $LOAD_PATH.include?(File.expand_path('../', __FILE__))
   $LOAD_PATH.unshift(File.expand_path('../', __FILE__))
 end
 
-require 'bamboo-worker/version'
+require 'bamboo-worker/cli'
+require 'bamboo-worker/cli/build'
+require 'bamboo-worker/cli/run'
 require 'bamboo-worker/template'
+require 'bamboo-worker/version'
