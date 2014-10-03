@@ -6,7 +6,7 @@ module BambooWorker
     #
     # Examples:
     #
-    # KnifeSkeleton::Template.render('Hello <%= title %>', {title: 'GoT'})
+    # BambooWorker::Template.render('Hello <%= title %>', {title: 'GoT'})
     # # => "Hello GoT"
     #
     # @param [String] template Template string to used for rendering
