@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
-require File.expand_path('../lib/bamboo-ci/version', __FILE__)
+require File.expand_path('../lib/bamboo-worker/version', __FILE__)
 
 Gem::Specification.new do |s|
-  s.name        = 'bamboo-ci'
-  s.version     = BambooCi::VERSION
+  s.name        = 'bamboo-worker'
+  s.version     = BambooWorker::VERSION
   s.date        = '2014-08-19'
   s.authors     = ['Pierre Rambaud']
   s.email       = 'pierre.rambaud86@gmail.com'
   s.license     = 'GPL-3.0'
   s.summary     = 'Convert .travis.yml file to executable bash script.'
-  s.homepage    = 'https://github.com/Numergy/bamboo-ci'
+  s.homepage    = 'https://github.com/Numergy/bamboo-worker'
   s.description = 'Convert .travis.yml file to executable bash script.'
-  s.executables = ['bamboo-ci']
+  s.executables = ['bamboo-worker']
 
   s.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
 

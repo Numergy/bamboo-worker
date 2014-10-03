@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Bamboo-ci version
-module BambooCi
+# Bamboo-worker version
+module BambooWorker
   VERSION = '0.1.0'
 end
