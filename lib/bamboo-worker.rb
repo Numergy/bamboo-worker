@@ -10,5 +10,7 @@ end
 require 'bamboo-worker/cli'
 require 'bamboo-worker/cli/build'
 require 'bamboo-worker/cli/run'
+require 'bamboo-worker/script'
+require 'bamboo-worker/stages'
 require 'bamboo-worker/template'
 require 'bamboo-worker/version'

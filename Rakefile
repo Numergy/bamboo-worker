@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'bundler/gem_tasks'
 
-GEMSPEC = Gem::Specification.load('gemirro.gemspec')
+GEMSPEC = Gem::Specification.load('bamboo-worker.gemspec')
 
 Dir['./task/*.rake'].each do |task|
   import(task)

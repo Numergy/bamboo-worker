@@ -3,6 +3,7 @@ $LOAD_PATH << File.expand_path('../lib', __FILE__)
 
 require 'simplecov'
 require 'logger'
+require 'fakefs/spec_helpers'
 
 RSpec.configure do |config|
   config.mock_with :rspec do |mocks|

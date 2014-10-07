@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'bamboo-worker/cli'
 require 'slop'
 
-# Gemirro tests
+# Bamboo worker tests
 module BambooWorker
   # CLI tests
   module CLI

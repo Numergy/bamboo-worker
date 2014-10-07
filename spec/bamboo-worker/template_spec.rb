@@ -5,8 +5,8 @@ require 'bamboo-worker/template'
 
 # Template tests
 module BambooWorker
-  describe 'Template.render' do
-    it 'renders ERB template' do
+  describe 'Template' do
+    it 'should render ERB template' do
       template = 'May the force be with <%= name %>.'
       data = { name: 'you' }
       output = Template.render(template, data)
