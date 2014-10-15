@@ -5,6 +5,10 @@ module BambooWorker
   class Script
     # Ruby language
     class Ruby < Default
+      DEFAULTS = {
+        'gemfile' => 'Gemfile'
+      }
+
       def setup
         super
         cmd "rbenv local #{config['ruby']}"
@@ -13,15 +17,21 @@ module BambooWorker
       def announce
         cmd 'ruby --version'
         cmd 'rbenv --version'
+        gemfile?(then: 'bundle --version')
+      end
+
+      def install
+        gemfile?(then: 'bundle install')
       end
 
       def script
-        cmd 'bundle exec rake'
+        gemfile?(then: 'bundle exec rake', else: 'rake')
       end
 
       private
 
-      def gemfile?
+      def gemfile?(*args, &block)
+        self.if("-f #{config['gemfile']}", *args, &block)
       end
     end
   end

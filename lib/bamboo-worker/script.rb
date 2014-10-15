@@ -12,8 +12,8 @@ module BambooWorker
     def initialize(file)
       fail ArgumentError, "File \"#{file}\" not found" unless File.exist?(file)
       @config = Travis::Yaml.load(File.read(file))
-      @script = Script.const_get(config.language.capitalize).new
-      @stack = Stages.new(@config, @script)
+      @script = Script.const_get(config.language.capitalize).new(@config)
+      @stack = Stages.new(@script)
     end
   end
 end

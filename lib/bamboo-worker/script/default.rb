@@ -7,10 +7,11 @@ module BambooWorker
     class Default
       include ::BambooWorker::Shell
 
-      attr_accessor :nodes
+      attr_accessor :nodes, :config
 
-      def initialize
+      def initialize(config)
         @nodes = []
+        @config = self.class::DEFAULTS.merge(config)
       end
 
       def setup
