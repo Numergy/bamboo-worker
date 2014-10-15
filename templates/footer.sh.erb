@@ -1,5 +1,6 @@
-<% @nodes.each do |command| -%>
-   <%= command %>
+<%= @nodes %>
+<% nodes.each do |command| -%>
+<%= command %>
 <% end -%>
 
 echo -e "\nDone. Your build exited with $BAMBOO_TEST_RESULT."
