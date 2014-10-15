@@ -59,7 +59,7 @@ module BambooWorker
     def build_custom_stage(stage, klass = self)
       cmds = *config[stage.to_s]
       cmds.each do |command|
-        klass.cmd command, fold: true
+        klass.cmd(command, assert: assert_stage?(stage))
       end
     end
 
@@ -86,6 +86,10 @@ module BambooWorker
       self.if('$TEST_RESULT != 0') do |klass|
         build_custom_stage('after_failure', klass)
       end if config['after_failure']
+    end
+
+    def assert_stage?(stage)
+      [:before_install, :install, :before_script].include?(stage)
     end
   end
 end

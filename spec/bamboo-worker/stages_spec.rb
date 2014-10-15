@@ -68,18 +68,16 @@ after_script:
                 :after_result,
                 :after_script])
       available = ["if [[ -f Gemfile ]]; then\n  bundle install\nfi",
-                   'before_install_command_1',
-                   'before_install_command_2',
-                   'before_script_command_1',
-                   'before_script_command_2',
+                   'bamboo_cmd before_install_command_1 --assert',
+                   'bamboo_cmd before_install_command_2 --assert',
+                   'bamboo_cmd before_script_command_1 --assert',
+                   'bamboo_cmd before_script_command_2 --assert',
                    'script_command_1',
                    'script_command_2',
                    "if [[ $TEST_RESULT = 0 ]]; then\n  " \
                    "success_command_1\n  success_command_2\nfi",
                    "if [[ $TEST_RESULT != 0 ]]; then\n  " \
                    "failure_command_1\n  failure_command_2\nfi",
-                   'failure_command_1',
-                   'failure_command_2',
                    'after_script_command_1',
                    'after_script_command_2']
       @stages.nodes.each do |stage|
