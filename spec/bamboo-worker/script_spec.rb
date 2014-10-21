@@ -12,30 +12,22 @@ module BambooWorker
   describe 'Script' do
     include FakeFS::SpecHelpers
 
-    it 'should raise execption when directory does not exists' do
-      expect { Script.new('undefined', '.travis.yml') }
-        .to raise_error(ArgumentError, 'Directory "undefined" not found')
-    end
-
     it 'should raise execption when file does not exists' do
-      FileUtils.mkdir_p('/tmp')
-      expect { Script.new('/tmp', '.travis.yml') }
+      expect { Script.new('.travis.yml') }
         .to raise_error(ArgumentError, 'File ".travis.yml" not found')
     end
 
     it 'should raise error if language is not found' do
-      FileUtils.mkdir_p('/tmp')
-      File.open('/tmp/.travis.yml', 'w').write('language: erlang')
+      File.open('.travis.yml', 'w').write('language: erlang')
 
-      expect { Script.new('/tmp', '.travis.yml') }
+      expect { Script.new('.travis.yml') }
         .to raise_error(ArgumentError, /Can't load "erlang" language/)
     end
 
     it 'should initialize script' do
-      FileUtils.mkdir_p('/tmp')
-      File.open('/tmp/.travis.yml', 'w').write('language: ruby')
+      File.open('.travis.yml', 'w').write('language: ruby')
 
-      stages = Script.new('/tmp', '.travis.yml').stages
+      stages = Script.new('.travis.yml').stages
       expect(stages).to be_a(Array)
       expect(stages.first).to be_a(Stages)
       expect(stages.first.script).to be_a(Script::Ruby)
@@ -48,10 +40,9 @@ module BambooWorker
                               Pathname
                                 .new(__FILE__).realpath))
 
-      FileUtils.mkdir_p('/tmp')
-      File.open('/tmp/.travis.yml', 'w').write('language: ruby')
+      File.open('.travis.yml', 'w').write('language: ruby')
 
-      stages = Script.new('/tmp', '.travis.yml').compile
+      stages = Script.new('.travis.yml').compile
       expect(stages).to be_a(Array)
       expect(stages.first).to be_a(String)
     end

@@ -3,20 +3,17 @@
 module BambooWorker
   # Script class
   class Script
-    attr_reader :stages, :build_dir
+    attr_reader :stages
 
     # Initialize script
     #
     # @param [string] File name
     #
-    def initialize(build_dir, file)
-      fail ArgumentError, "Directory \"#{build_dir}\" not found" unless
-        File.exist?(build_dir)
+    def initialize(file)
       fail ArgumentError, "File \"#{file}\" not found" unless
-        File.exist?("#{build_dir}/#{file}")
+        File.exist?(file)
 
-      file_content = File.read("#{build_dir}/#{file}")
-      @build_dir = build_dir
+      file_content = File.read(file)
       @stages = []
 
       Travis::Yaml.matrix(file_content).each do |matrix|
@@ -36,8 +33,7 @@ module BambooWorker
         stage.builtin_stages
         stage.custom_stages
         content = Template
-          .render(File.read("#{templates_path}/header.sh.erb"),
-                  build_dir: @build_dir)
+          .render(File.read("#{templates_path}/header.sh.erb"))
         content += Template
           .render(File.read("#{templates_path}/footer.sh.erb"),
                   nodes: stage.nodes)
