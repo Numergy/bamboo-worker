@@ -11,7 +11,7 @@ module BambooWorker
 
       def setup
         super
-        cmd "rbenv local #{config['ruby']}"
+        cmd "rbenv local #{config.ruby}"
       end
 
       def announce
@@ -31,7 +31,7 @@ module BambooWorker
       private
 
       def gemfile?(*args, &block)
-        self.if("-f #{config['gemfile']}", *args, &block)
+        self.if("-f #{DEFAULTS['gemfile']}", *args, &block)
       end
     end
   end

@@ -6,7 +6,7 @@ module BambooWorker
     class Cmd < Node
       def code
         if opts.any?
-          ['bamboo_cmd', escape(super), *opts].join(' ')
+          ['bamboo_cmd', escape(super.to_s), *opts].join(' ')
         else
           super
         end

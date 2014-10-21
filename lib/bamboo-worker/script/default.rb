@@ -11,7 +11,7 @@ module BambooWorker
 
       def initialize(config)
         @nodes = []
-        @config = self.class::DEFAULTS.merge(config)
+        @config = config
       end
 
       def setup

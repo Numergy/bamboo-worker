@@ -40,11 +40,6 @@ after_script:
       @stages = Stages.new(Script::Ruby.new(travis))
     end
 
-    it 'should generate configuration' do
-      expect(@stages.config).to be_a(Hash)
-      expect(@stages.config['gemfile']).to eq('Gemfile')
-    end
-
     it 'should build builtin stages' do
       expect(@stages.builtin_stages).to eq([:setup, :env, :announce])
       available = ['rbenv local 1.9.3',
@@ -72,8 +67,8 @@ after_script:
                    'bamboo_cmd before_install_command_2 --assert',
                    'bamboo_cmd before_script_command_1 --assert',
                    'bamboo_cmd before_script_command_2 --assert',
-                   'script_command_1',
-                   'script_command_2',
+                   'bamboo_cmd script_command_1 --assert',
+                   'bamboo_cmd script_command_2 --assert',
                    "if [[ $TEST_RESULT = 0 ]]; then\n  " \
                    "success_command_1\n  success_command_2\nfi",
                    "if [[ $TEST_RESULT != 0 ]]; then\n  " \

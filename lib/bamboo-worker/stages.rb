@@ -4,6 +4,7 @@ module BambooWorker
   # Stages class
   class Stages
     include ::BambooWorker::Shell
+
     attr_reader :config, :script, :nodes
 
     STAGES = {
@@ -67,7 +68,7 @@ module BambooWorker
       export 'BAMBOO', 'true', echo: false
       export 'CI', 'true', echo: false
       export 'CONTINIOUS_INTEGRATION', 'true', echo: false
-      # @TODO add custom env
+      # @TODO global and matrix env vars
     end
 
     def setup
@@ -89,7 +90,7 @@ module BambooWorker
     end
 
     def assert_stage?(stage)
-      [:before_install, :install, :before_script].include?(stage)
+      [:before_install, :install, :before_script, :script].include?(stage)
     end
   end
 end

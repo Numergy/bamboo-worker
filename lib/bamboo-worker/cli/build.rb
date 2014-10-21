@@ -8,7 +8,7 @@ BambooWorker::CLI.options.command 'build' do
 
   run do |_opts, args|
     current_dir = File.expand_path(args[0] || Dir.pwd)
-    script = BambooWorker::Script.new("#{current_dir}/.travis.yml")
+    script = BambooWorker::Script.new(current_dir, '.travis.yml')
     script.compile
   end
 end
