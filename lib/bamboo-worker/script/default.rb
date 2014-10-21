@@ -9,15 +9,23 @@ module BambooWorker
 
       attr_accessor :nodes, :config
 
+      # Initialize script language
+      #
+      # @param [Travis::Yaml::Matrix::Entry] config Configuration to used
+      #
       def initialize(config)
         @nodes = []
         @config = config
       end
 
+      # Setup language for the build
+      #
       def setup
         # overwrite
       end
 
+      # Announce language for the build
+      #
       def announce
         # overwrite
       end

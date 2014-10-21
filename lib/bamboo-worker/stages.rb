@@ -21,8 +21,7 @@ module BambooWorker
 
     # Initialize script
     #
-    # @param [Travis::Yaml::Node::Root] Configuration
-    # @param [BambooWorker::Script::Default] Language to used
+    # @param [BambooWorker::Script::Default] script Script language to use
     #
     def initialize(script)
       @script = script
@@ -31,18 +30,26 @@ module BambooWorker
       @script.nodes = @nodes
     end
 
+    # Build all Builtin stages
+    #
     def builtin_stages
       STAGES[:builtin].each do |stage|
         build_builtin_stage(stage)
       end
     end
 
+    # Build all Custom stages
+    #
     def custom_stages
       STAGES[:custom].each do |stage|
         run_stage(stage)
       end
     end
 
+    # Run stage
+    #
+    # @param [String] stage Stage name
+    #
     def run_stage(stage)
       if stage == :after_result
         build_builtin_stage(stage)
@@ -53,10 +60,19 @@ module BambooWorker
       end
     end
 
+    # Build builtin stage
+    #
+    # @param [String] stage Stage name
+    #
     def build_builtin_stage(stage)
       send(stage)
     end
 
+    # Build custom stage
+    #
+    # @param [String] stage Stage name
+    # @param [Object] klass Object to send command
+    #
     def build_custom_stage(stage, klass = self)
       cmds = *config[stage.to_s]
       cmds.each do |command|
@@ -64,6 +80,8 @@ module BambooWorker
       end
     end
 
+    # Generate env vars for the script
+    #
     def env
       export 'BAMBOO', 'true', echo: false
       export 'CI', 'true', echo: false
@@ -71,14 +89,20 @@ module BambooWorker
       # @TODO global and matrix env vars
     end
 
+    # Setup build
+    #
     def setup
       @script.setup
     end
 
+    # Announce build
+    #
     def announce
       @script.announce
     end
 
+    # After result
+    #
     def after_result
       self.if('$TEST_RESULT = 0') do |klass|
         build_custom_stage('after_success', klass)
@@ -89,6 +113,8 @@ module BambooWorker
       end if config['after_failure']
     end
 
+    # Test if stage should be asserted in the script
+    #
     def assert_stage?(stage)
       [:before_install, :install, :before_script, :script].include?(stage)
     end

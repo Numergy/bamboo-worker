@@ -5,6 +5,7 @@ module BambooWorker
   module Shell
     # Conditional If class
     class Else < Conditional
+      # @see BambooWorker::Shell::Conditional#open
       def open
         @open = Node.new('else', options)
       end

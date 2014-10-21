@@ -4,6 +4,9 @@ module BambooWorker
   module Shell
     # Cmd class
     class Cmd < Node
+      # Overwrite code method if option is passed
+      #
+      # @return [String]
       def code
         if opts.any?
           ['bamboo_cmd', escape(super.to_s), *opts].join(' ')
@@ -12,6 +15,9 @@ module BambooWorker
         end
       end
 
+      # List of available options for bamboo_cmd command
+      #
+      # @return [Array]
       def opts
         opts ||= []
         opts << '--assert' if options[:assert]

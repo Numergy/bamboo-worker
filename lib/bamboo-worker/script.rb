@@ -5,9 +5,9 @@ module BambooWorker
   class Script
     attr_reader :stages
 
-    # Initialize script
+    # Initialize stages
     #
-    # @param [string] File name
+    # @param [string] file File name
     #
     def initialize(file)
       fail ArgumentError, "File \"#{file}\" not found" unless
@@ -27,6 +27,8 @@ module BambooWorker
       end
     end
 
+    # Compile scripts
+    #
     def compile
       scripts = []
       @stages.each do |stage|
