@@ -42,7 +42,9 @@ after_script:
 
     it 'should build builtin stages' do
       expect(@stages.builtin_stages).to eq([:setup, :env, :announce])
-      available = ['rbenv local 1.9.3',
+      available = ['export RBENV_VERSION=$(rbenv versions |' \
+                   ' grep 1.9.3 | tail -1 | ' \
+                   "sed 's/[^0-9.]*\\([0-9.]*-[a-z0-9]*\\).*/\\1/')",
                    'export BAMBOO_STAGE=setup',
                    'export BAMBOO=true',
                    'export CI=true',

@@ -13,7 +13,8 @@ module BambooWorker
       #
       def setup
         super
-        cmd "rbenv local #{config.ruby}"
+        export 'RBENV_VERSION', "$(rbenv versions | grep #{config.ruby} " \
+        "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*-[a-z0-9]*\\).*/\\1/')"
       end
 
       # Announce ruby, rbenv and bundle version
