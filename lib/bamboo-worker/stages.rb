@@ -51,6 +51,7 @@ module BambooWorker
     # @param [String] stage Stage name
     #
     def run_stage(stage)
+      export 'BAMBOO_STAGE', stage, echo: false
       if stage == :after_result
         build_builtin_stage(stage)
       elsif @script.respond_to?(stage, false) && !config.key?(stage.to_s)
@@ -65,6 +66,7 @@ module BambooWorker
     # @param [String] stage Stage name
     #
     def build_builtin_stage(stage)
+      export 'BAMBOO_STAGE', stage, echo: false
       send(stage)
     end
 

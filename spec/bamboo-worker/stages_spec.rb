@@ -43,9 +43,12 @@ after_script:
     it 'should build builtin stages' do
       expect(@stages.builtin_stages).to eq([:setup, :env, :announce])
       available = ['rbenv local 1.9.3',
+                   'export BAMBOO_STAGE=setup',
                    'export BAMBOO=true',
                    'export CI=true',
+                   'export BAMBOO_STAGE=env',
                    'export CONTINIOUS_INTEGRATION=true',
+                   'export BAMBOO_STAGE=announce',
                    'ruby --version',
                    'rbenv --version',
                    "if [[ -f Gemfile ]]; then\n  bundle --version\nfi"]
@@ -63,16 +66,22 @@ after_script:
                 :after_result,
                 :after_script])
       available = ["if [[ -f Gemfile ]]; then\n  bundle install\nfi",
+                   'export BAMBOO_STAGE=before_install',
                    'bamboo_cmd before_install_command_1 --assert',
                    'bamboo_cmd before_install_command_2 --assert',
+                   'export BAMBOO_STAGE=before_script',
+                   'export BAMBOO_STAGE=install',
                    'bamboo_cmd before_script_command_1 --assert',
                    'bamboo_cmd before_script_command_2 --assert',
+                   'export BAMBOO_STAGE=script',
                    'bamboo_cmd script_command_1 --assert',
                    'bamboo_cmd script_command_2 --assert',
+                   'export BAMBOO_STAGE=after_result',
                    "if [[ $TEST_RESULT = 0 ]]; then\n  " \
                    "success_command_1\n  success_command_2\nfi",
                    "if [[ $TEST_RESULT != 0 ]]; then\n  " \
                    "failure_command_1\n  failure_command_2\nfi",
+                   'export BAMBOO_STAGE=after_script',
                    'after_script_command_1',
                    'after_script_command_2']
       @stages.nodes.each do |stage|
