@@ -37,48 +37,48 @@ module BambooWorker
 
       it 'should prepare if statement' do
         @dsl.if('-f test', 'cat test')
-        expect(@dsl.nodes.to_s).to eq('[if [[ -f test ]]; ' \
-                                      "then\n  cat test\nfi]")
+        expect(@dsl.nodes.map(&:to_s)).to eq(['if [[ -f test ]]; ' \
+                                      "then\n  cat test\nfi"])
       end
 
       it 'should prepare if else statements with if method' do
         @dsl.if('-f test', 'cat test', else: 'ls test')
-        expect(@dsl.nodes.to_s)
-          .to eq("[if [[ -f test ]]; then\n  cat test\nelse\n  ls test\nfi]")
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(["if [[ -f test ]]; then\n  cat test\nelse\n  ls test\nfi"])
       end
 
       it 'should prepare if else statements with if and else methods' do
         @dsl.if('-f test', 'cat test')
         @dsl.else('ls test')
-        expect(@dsl.nodes.to_s)
-          .to eq("[if [[ -f test ]]; then\n  cat test\nelse\n  ls test\nfi]")
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(["if [[ -f test ]]; then\n  cat test\nelse\n  ls test\nfi"])
       end
 
       it 'should prepare if elif statements with if and elif methods' do
         @dsl.if('-f test', 'cat test')
         @dsl.elif('-f truc', 'ls truc')
-        expect(@dsl.nodes.to_s)
-          .to eq("[if [[ -f test ]]; then\n  cat test" \
-                 "\nelif [[ -f truc ]]; then\n  ls truc\nfi]")
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(["if [[ -f test ]]; then\n  cat test" \
+                 "\nelif [[ -f truc ]]; then\n  ls truc\nfi"])
       end
 
       it 'should prepare if/elif/else statements with if and elif methods' do
         @dsl.if('-f test', 'cat test')
         @dsl.elif('-f truc', 'ls truc', else: 'cat something')
-        expect(@dsl.nodes.to_s)
-          .to eq("[if [[ -f test ]]; then\n  cat test" \
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(["if [[ -f test ]]; then\n  cat test" \
                  "\nelif [[ -f truc ]]; then\n  ls truc\n" \
-                 "else\n  cat something\nfi]")
+                 "else\n  cat something\nfi"])
       end
 
       it 'should prepare if/elif/else statements with if/elif/else methods' do
         @dsl.if('-f test', 'cat test')
         @dsl.elif('-f truc', 'ls truc')
         @dsl.else('cat something')
-        expect(@dsl.nodes.to_s)
-          .to eq("[if [[ -f test ]]; then\n  cat test" \
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(["if [[ -f test ]]; then\n  cat test" \
                  "\nelif [[ -f truc ]]; then\n  ls truc\n" \
-                 "else\n  cat something\nfi]")
+                 "else\n  cat something\nfi"])
       end
     end
   end
