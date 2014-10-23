@@ -88,7 +88,16 @@ module BambooWorker
       export 'BAMBOO', 'true', echo: false
       export 'CI', 'true', echo: false
       export 'CONTINIOUS_INTEGRATION', 'true', echo: false
-      # @TODO global and matrix env vars
+
+      if @config.key?('env')
+        @config['env']['global'].each do |line|
+          custom_export(line)
+        end unless @config['env']['global'].nil?
+      end
+
+      custom_export(@config.matrix_attributes[:env]) if
+        @config.respond_to?('matrix_attributes') &&
+        !@config.matrix_attributes[:env].nil?
     end
 
     # Setup build
@@ -115,10 +124,20 @@ module BambooWorker
       end if config['after_failure']
     end
 
+    private
+
     # Test if stage should be asserted in the script
     #
     def assert_stage?(stage)
       [:before_install, :install, :before_script, :script].include?(stage)
+    end
+
+    # Custom export from line in file
+    #
+    # @param [String] line Line such as key=value
+    def custom_export(line)
+      key, value = line.split('=', 2).compact
+      export key, value, echo: false
     end
   end
 end

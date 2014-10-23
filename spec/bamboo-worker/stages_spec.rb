@@ -14,10 +14,13 @@ module BambooWorker
     include FakeFS::SpecHelpers
 
     before(:each) do
-      travis = Travis::Yaml.load('
+      travis = Travis::Yaml.matrix('
 ruby: 1.9.3
 env:
-  - DB=pgsql
+  global:
+    - DB=pgsql
+  matrix:
+    - USER=test
 before_install:
   - before_install_command_1
   - before_install_command_2
@@ -37,7 +40,8 @@ after_script:
   - after_script_command_1
   - after_script_command_2
 ')
-      @stages = Stages.new(Script::Ruby.new(travis))
+
+      @stages = Stages.new(Script::Ruby.new(travis.first))
     end
 
     it 'should build builtin stages' do
@@ -48,6 +52,8 @@ after_script:
                    'export BAMBOO_STAGE=setup',
                    'export BAMBOO=true',
                    'export CI=true',
+                   'export DB=pgsql',
+                   'export USER=test',
                    'export BAMBOO_STAGE=env',
                    'export CONTINIOUS_INTEGRATION=true',
                    'export BAMBOO_STAGE=announce',
@@ -87,6 +93,71 @@ after_script:
                    'after_script_command_1',
                    'after_script_command_2']
       @stages.nodes.each do |stage|
+        expect(available).to include(stage.to_s)
+      end
+    end
+
+    it 'should play with simple env vars' do
+      travis = Travis::Yaml.matrix('
+ruby:
+  - 1.9.3
+env:
+  - DB=pgsql
+  - DB=mysql
+').to_enum
+
+      stages = Stages.new(Script::Ruby.new(travis.next))
+      stages.env
+      available = ['export BAMBOO=true',
+                   'export CI=true',
+                   'export CONTINIOUS_INTEGRATION=true',
+                   'export DB=pgsql']
+      stages.nodes.each do |stage|
+        expect(available).to include(stage.to_s)
+      end
+
+      stages = Stages.new(Script::Ruby.new(travis.next))
+      stages.env
+      available = ['export BAMBOO=true',
+                   'export CI=true',
+                   'export CONTINIOUS_INTEGRATION=true',
+                   'export DB=mysql']
+      stages.nodes.each do |stage|
+        expect(available).to include(stage.to_s)
+      end
+    end
+
+    it 'should play with complex env vars' do
+      travis = Travis::Yaml.matrix('
+ruby:
+  - 1.9.3
+env:
+  global:
+    - USER=test
+  matrix:
+    - DB=pgsql
+    - DB=mysql
+').to_enum
+
+      stages = Stages.new(Script::Ruby.new(travis.next))
+      stages.env
+      available = ['export BAMBOO=true',
+                   'export USER=test',
+                   'export CI=true',
+                   'export CONTINIOUS_INTEGRATION=true',
+                   'export DB=pgsql']
+      stages.nodes.each do |stage|
+        expect(available).to include(stage.to_s)
+      end
+
+      stages = Stages.new(Script::Ruby.new(travis.next))
+      stages.env
+      available = ['export BAMBOO=true',
+                   'export USER=test',
+                   'export CI=true',
+                   'export CONTINIOUS_INTEGRATION=true',
+                   'export DB=mysql']
+      stages.nodes.each do |stage|
         expect(available).to include(stage.to_s)
       end
     end
