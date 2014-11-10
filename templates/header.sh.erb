@@ -66,7 +66,7 @@ bamboo_time_finish() {
   return $result
 }
 
-function bamboo_nanoseconds() {
+bamboo_nanoseconds() {
   local cmd="date"
   local format="+%s%N"
   local os=$(uname)
