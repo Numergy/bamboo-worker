@@ -34,11 +34,9 @@ module BambooWorker
       @stages.each do |stage|
         stage.builtin_stages
         stage.custom_stages
-        content = Template
-          .render(File.read("#{templates_path}/header.sh.erb"))
-        content += Template
-          .render(File.read("#{templates_path}/footer.sh.erb"),
-                  nodes: stage.nodes)
+        content = Template.render(File.read("#{templates_path}/header.sh.erb"))
+        content += Template.render(File.read("#{templates_path}/footer.sh.erb"),
+                                   nodes: stage.nodes)
         scripts << content
       end
 

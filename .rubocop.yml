@@ -23,3 +23,6 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Severity: warning
   Max: 10
+Metrics/AbcSize:
+  Severity: warning
+  Max: 25

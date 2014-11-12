@@ -87,7 +87,7 @@ module BambooWorker
     def env
       export 'BAMBOO', 'true', echo: false
       export 'CI', 'true', echo: false
-      export 'CONTINIOUS_INTEGRATION', 'true', echo: false
+      export 'CONTINUOUS_INTEGRATION', 'true', echo: false
 
       if @config.key?('env')
         @config['env']['global'].each do |line|

@@ -15,8 +15,8 @@ module BambooWorker
       # @param [Array] *args Arguments
       # @param [Block] &_block Block
       def initialize(condition, *args, &_block)
-        args.unshift(args.last.delete(:then)) if args.last.is_a?(Hash) &&
-          args.last[:then]
+        args.unshift(args.last.delete(:then)) if
+          args.last.is_a?(Hash) && args.last[:then]
 
         args = *condition if name == 'else'
         condition = "[[ #{condition} ]]" unless name == 'else'

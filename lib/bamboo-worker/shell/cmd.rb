@@ -24,8 +24,8 @@ module BambooWorker
         opts << '--echo' if options[:echo]
         opts << '--retry' if options[:retry]
         opts << '--timing' if options[:timing]
-        opts << "--display #{escape(options[:echo])}" if options[:echo]
-          .is_a?(String)
+        opts << "--display #{escape(options[:echo])}" if
+          options[:echo].is_a?(String)
         opts
       end
     end
