@@ -56,7 +56,7 @@ after_script:
                    'export DB=pgsql',
                    'export USER=test',
                    'export BAMBOO_STAGE=env',
-                   'export CONTINIOUS_INTEGRATION=true',
+                   'export CONTINUOUS_INTEGRATION=true',
                    'export BAMBOO_STAGE=announce',
                    'ruby --version',
                    'rbenv --version',
@@ -111,7 +111,7 @@ env:
       stages.env
       available = ['export BAMBOO=true',
                    'export CI=true',
-                   'export CONTINIOUS_INTEGRATION=true',
+                   'export CONTINUOUS_INTEGRATION=true',
                    'export DB=pgsql']
       stages.nodes.each do |stage|
         expect(available).to include(stage.to_s)
@@ -121,7 +121,7 @@ env:
       stages.env
       available = ['export BAMBOO=true',
                    'export CI=true',
-                   'export CONTINIOUS_INTEGRATION=true',
+                   'export CONTINUOUS_INTEGRATION=true',
                    'export DB=mysql']
       stages.nodes.each do |stage|
         expect(available).to include(stage.to_s)
@@ -145,7 +145,7 @@ env:
       available = ['export BAMBOO=true',
                    'export USER=test',
                    'export CI=true',
-                   'export CONTINIOUS_INTEGRATION=true',
+                   'export CONTINUOUS_INTEGRATION=true',
                    'export DB=pgsql']
       stages.nodes.each do |stage|
         expect(available).to include(stage.to_s)
@@ -156,7 +156,7 @@ env:
       available = ['export BAMBOO=true',
                    'export USER=test',
                    'export CI=true',
-                   'export CONTINIOUS_INTEGRATION=true',
+                   'export CONTINUOUS_INTEGRATION=true',
                    'export DB=mysql']
       stages.nodes.each do |stage|
         expect(available).to include(stage.to_s)
