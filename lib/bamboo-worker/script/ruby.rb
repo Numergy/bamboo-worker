@@ -16,6 +16,10 @@ module BambooWorker
         export 'RBENV_VERSION', "$(rbenv versions | grep #{@config.ruby} " \
         "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*-[a-z0-9]*\\).*/\\1/'" \
         "| sed -e 's/^[ \\t]*//')"
+        self.if('-z "$RBENV_VERSION"') do |klass|
+          klass.cmd("echo '#{@config.ruby} not found'")
+          klass.cmd('exit 1')
+        end
       end
 
       # Announce ruby, rbenv and bundle version
