@@ -33,7 +33,9 @@ module BambooWorker
       # Default install action for ruby
       #
       def install
-        gemfile?(then: 'bundle install')
+        gemfile? do |klass|
+          klass.cmd('bundle install', retry: true)
+        end
       end
 
       # Default test script for ruby

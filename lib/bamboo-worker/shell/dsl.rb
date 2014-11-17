@@ -41,6 +41,30 @@ module BambooWorker
         raw 'echo'
       end
 
+      # Display failure message
+      #
+      # @param [String] message Message to display
+      #
+      def failure(message)
+        export 'BAMBOO_CMD', 'no_script', echo: false
+        echo message
+        raw 'exit 1'
+      end
+
+      # Display failure message
+      #
+      # @param [String] message Message to display
+      # @param [Hash] options Node options
+      #
+      def echo(message = '', options = {})
+        if message.empty?
+          newline
+        else
+          cmd "echo '#{message.gsub(/'/) { "\\\'\'" }}'",
+              { assert: false, echo: false, timing: false }.merge(options)
+        end
+      end
+
       # Create if statment
       #
       def if(*args, &block)

@@ -38,7 +38,7 @@ module BambooWorker
       it 'should prepare if statement' do
         @dsl.if('-f test', 'cat test')
         expect(@dsl.nodes.map(&:to_s)).to eq(['if [[ -f test ]]; ' \
-                                      "then\n  cat test\nfi"])
+                                              "then\n  cat test\nfi"])
       end
 
       it 'should prepare if else statements with if method' do
@@ -59,7 +59,7 @@ module BambooWorker
         @dsl.elif('-f truc', 'ls truc')
         expect(@dsl.nodes.map(&:to_s))
           .to eq(["if [[ -f test ]]; then\n  cat test" \
-                 "\nelif [[ -f truc ]]; then\n  ls truc\nfi"])
+                  "\nelif [[ -f truc ]]; then\n  ls truc\nfi"])
       end
 
       it 'should prepare if/elif/else statements with if and elif methods' do
@@ -67,8 +67,8 @@ module BambooWorker
         @dsl.elif('-f truc', 'ls truc', else: 'cat something')
         expect(@dsl.nodes.map(&:to_s))
           .to eq(["if [[ -f test ]]; then\n  cat test" \
-                 "\nelif [[ -f truc ]]; then\n  ls truc\n" \
-                 "else\n  cat something\nfi"])
+                  "\nelif [[ -f truc ]]; then\n  ls truc\n" \
+                  "else\n  cat something\nfi"])
       end
 
       it 'should prepare if/elif/else statements with if/elif/else methods' do
@@ -77,8 +77,34 @@ module BambooWorker
         @dsl.else('cat something')
         expect(@dsl.nodes.map(&:to_s))
           .to eq(["if [[ -f test ]]; then\n  cat test" \
-                 "\nelif [[ -f truc ]]; then\n  ls truc\n" \
-                 "else\n  cat something\nfi"])
+                  "\nelif [[ -f truc ]]; then\n  ls truc\n" \
+                  "else\n  cat something\nfi"])
+      end
+
+      it 'should echo new line' do
+        @dsl.echo('')
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(['echo'])
+      end
+
+      it 'should echo something' do
+        @dsl.echo('my message')
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(["echo 'my message'"])
+      end
+
+      it 'should echo something with escaping quotes' do
+        @dsl.echo("my 'message'")
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(["echo 'my \\''message\\'''"])
+      end
+
+      it 'should failure with message' do
+        @dsl.failure('error')
+        expect(@dsl.nodes.map(&:to_s))
+          .to eq(['export BAMBOO_CMD=no_script',
+                  "echo 'error'",
+                  'exit 1'])
       end
     end
   end

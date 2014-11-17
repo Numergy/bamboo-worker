@@ -76,7 +76,8 @@ after_script:
                 :script,
                 :after_result,
                 :after_script])
-      available = ["if [[ -f Gemfile ]]; then\n  bundle install\nfi",
+      available = ["if [[ -f Gemfile ]]; then\n  bamboo_cmd bundle\\ install" \
+                   " --retry\nfi",
                    'export BAMBOO_STAGE=before_install',
                    'bamboo_cmd before_install_command_1 --assert',
                    'bamboo_cmd before_install_command_2 --assert',
