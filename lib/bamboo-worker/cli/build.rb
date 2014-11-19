@@ -17,7 +17,7 @@ BambooWorker::CLI.options.command 'build' do
     dir_name = File.basename(current_dir)
     idx = 0
     script.compile.each do |f|
-      File.open("#{opts[:d]}/#{dir_name}#{idx}.sh", 'w+') do |file|
+      File.open("#{opts[:d]}/#{dir_name}#{idx}.sh", 'w+', 0755) do |file|
         file.write(f)
         puts "File writes in #{file.path}"
       end
