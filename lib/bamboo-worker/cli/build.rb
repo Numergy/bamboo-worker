@@ -2,7 +2,7 @@
 require 'tempfile'
 
 BambooWorker::CLI.options.command 'build' do
-  banner 'Usage: bamboo-worker build [DIRECTORY] [OPTIONS]'
+  banner 'Usage: bamboo-worker build [OPTIONS]'
   description 'Build bash script from yaml file'
   separator "\nOptions:\n"
 
