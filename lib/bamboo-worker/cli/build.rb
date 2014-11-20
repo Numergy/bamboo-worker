@@ -2,7 +2,7 @@
 require 'tempfile'
 
 BambooWorker::CLI.options.command 'build' do
-  banner 'Usage: bamboo-worker build [DIRECTORY] [OPTIONS]'
+  banner 'Usage: bamboo-worker build [OPTIONS]'
   description 'Build bash script from yaml file'
   separator "\nOptions:\n"
 
@@ -17,7 +17,7 @@ BambooWorker::CLI.options.command 'build' do
     dir_name = File.basename(current_dir)
     idx = 0
     script.compile.each do |f|
-      File.open("#{opts[:d]}/#{dir_name}#{idx}.sh", 'w+') do |file|
+      File.open("#{opts[:d]}/#{dir_name}#{idx}.sh", 'w+', 0755) do |file|
         file.write(f)
         puts "File writes in #{file.path}"
       end
