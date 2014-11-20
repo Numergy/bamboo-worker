@@ -1,7 +1,7 @@
 module BambooWorker
   module Worker
     # Docker worker
-    class Docker < Abstract
+    class Docker < Base
       def initialize
         super '/usr/bin/docker'
       end

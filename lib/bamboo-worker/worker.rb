@@ -5,8 +5,8 @@ module BambooWorker
   module Worker
     autoload :Docker, 'bamboo-worker/worker/docker'
 
-    # Abstract class for workers
-    class Abstract
+    # Base class for workers
+    class Base
       attr_reader :executable
 
       # Initialize worker
