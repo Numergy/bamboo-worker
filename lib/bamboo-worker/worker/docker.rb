@@ -10,6 +10,8 @@ module BambooWorker
         exec docker_command(script)
       end
 
+      private
+
       # Generate docker command to run script
       #
       # @param [string] script Script to run on docker

@@ -14,8 +14,8 @@ module BambooWorker
       # @param [string] executable Executable script for the worker
       #
       def initialize(executable)
-        fail "Can't find executable #{executable}" unless
-          File.exist?(executable)
+        fail "Can't find executable #{executable}, or is not executable." unless
+          File.executable?(executable)
         @executable = executable
       end
 
