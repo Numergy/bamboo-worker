@@ -22,8 +22,9 @@ module BambooWorker
       # Run script on worker
       #
       # @param [string] script Script to run on worker
+      # @param [array] worker's specific arguments
       #
-      def run(_script)
+      def run(_script, _args)
         fail NotImplementedError
       end
     end

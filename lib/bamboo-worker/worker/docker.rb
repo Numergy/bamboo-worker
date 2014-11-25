@@ -6,8 +6,9 @@ module BambooWorker
         super '/usr/bin/docker'
       end
 
-      def run(script)
-        exec docker_command(script)
+      def run(script, args)
+        container = args[0]
+        exec docker_command(script, container)
       end
 
       private
@@ -16,9 +17,8 @@ module BambooWorker
       #
       # @param [string] script Script to run on docker
       #
-      def docker_command(script)
+      def docker_command(script, container)
         base_path = File.dirname(File.expand_path(script))
-        container = 'builder/ruby'
         entrypoint = '/bin/bash'
         remote_path = '/tmp/build'
         docker_command = "--login -c 'cd #{remote_path}'; ./#{script}"

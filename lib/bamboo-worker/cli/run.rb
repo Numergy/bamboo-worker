@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 BambooWorker::CLI.options.command 'run' do
-  banner 'Usage: bamboo-worker run [OPTIONS]'
+  banner 'Usage: bamboo-worker run [OPTIONS] [WORKER ARGS]'
   description 'Run bash script on worker'
   separator "\nOptions:\n"
 
@@ -10,7 +10,7 @@ BambooWorker::CLI.options.command 'run' do
      default: 'docker')
 
   run do |opts, args|
-    dir_name = File.basename(File.expand_path(args[0] || Dir.pwd))
+    dir_name = File.basename(File.expand_path(Dir.pwd))
 
     worker =
       Object.const_get('BambooWorker')
@@ -19,7 +19,7 @@ BambooWorker::CLI.options.command 'run' do
 
     scripts = Dir.glob("#{opts[:d]}/#{dir_name}*.sh")
     scripts.each do |script|
-      worker.run(script)
+      worker.run(script, args)
     end
   end
 end
