@@ -15,19 +15,22 @@ module BambooWorker
 
       # Generate docker command to run script
       #
-      # @param [string] script Script to run on docker
+      # @param [String] script Script to run on docker
+      #
+      # @return [String]
       #
       def docker_command(script, container)
         base_path = File.dirname(File.expand_path(script))
         entrypoint = '/bin/bash'
         remote_path = '/tmp/build'
-        docker_command = "--login -c 'cd #{remote_path}'; ./#{script}"
 
         cmd = @executable
         cmd << ' run -t -i'
         cmd << " --entrypoint '#{entrypoint}'"
         cmd << " -v #{base_path}:#{remote_path}"
-        cmd << " #{container} #{docker_command}"
+        cmd << " #{container}"
+        cmd << " --login -c 'cd #{remote_path}';"
+        cmd << " ./#{script.gsub(/^(\/)+/, '')}"
       end
     end
   end
