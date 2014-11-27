@@ -12,7 +12,7 @@ BambooWorker::CLI.options.command 'build' do
      default: '/tmp')
 
   run do |opts, args|
-    current_dir = File.expand_path(args[0] || Dir.pwd)
+    current_dir = File.expand_path(Dir.pwd)
     script = BambooWorker::Script.new("#{current_dir}/#{opts[:c]}")
     dir_name = File.basename(current_dir)
     idx = 0
