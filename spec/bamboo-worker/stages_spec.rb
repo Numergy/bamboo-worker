@@ -60,6 +60,9 @@ after_script:
                    'export BAMBOO_STAGE=env',
                    'export CONTINUOUS_INTEGRATION=true',
                    'export BAMBOO_STAGE=announce',
+                   'echo',
+                   'echo "Bamboo Worker"',
+                   'echo',
                    'ruby --version',
                    'rbenv --version',
                    "if [[ -f Gemfile ]]; then\n  bundle --version\nfi"]

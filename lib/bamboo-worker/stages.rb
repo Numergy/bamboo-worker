@@ -109,6 +109,9 @@ module BambooWorker
     # Announce build
     #
     def announce
+      @script.newline
+      @script.cmd('echo "Bamboo Worker"')
+      @script.newline
       @script.announce
     end
 
