@@ -30,8 +30,9 @@ BambooWorker::CLI.options.command 'run' do
       files.each do |file|
         worker.run(dir_name, config, file, opts, args)
       end
-    rescue
+    rescue SystemCallError => e
       puts 'Build failed!'
+      puts e.message
       exit 1
     ensure
       files.each do |file|

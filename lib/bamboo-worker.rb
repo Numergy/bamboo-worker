@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'erubis'
+require 'English'
 require 'slop'
 require 'travis/yaml'
 require 'pathname'

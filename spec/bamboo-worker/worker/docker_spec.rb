@@ -30,9 +30,9 @@ module BambooWorker
         .and_return(true)
 
       Struct.new('TRAVIS_OK', :language)
-      Struct.new('CHILD_STATUS_OK', :exitstatus)
 
-      $CHILD_STATUS = Struct::CHILD_STATUS_OK.new(0)
+      $CHILD_STATUS = double
+      $CHILD_STATUS.should_receive(:success?).and_return(true)
 
       expect(docker.run('test',
                         Struct::TRAVIS_OK.new('ruby'),
@@ -43,7 +43,7 @@ module BambooWorker
         .to be_nil
     end
 
-    it 'should raise error when exitstatus is not 0' do
+    it 'should raise error when command failed' do
       docker = Worker::Docker.new
       docker.should_receive(:system)
         .with("/usr/bin/docker run -t -w '/tmp/build/test'" \
@@ -53,10 +53,9 @@ module BambooWorker
         .and_return(true)
 
       Struct.new('TRAVIS_NOT_OK', :language)
-      Struct.new('CHILD_STATUS_NOT_OK', :exitstatus)
 
-      $CHILD_STATUS = Struct::CHILD_STATUS_NOT_OK.new(1)
-
+      $CHILD_STATUS = double
+      $CHILD_STATUS.should_receive(:success?).and_return(false)
       expect do
         docker.run('test',
                    Struct::TRAVIS_NOT_OK.new('ruby'),

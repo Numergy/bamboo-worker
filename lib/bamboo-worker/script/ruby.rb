@@ -34,7 +34,7 @@ module BambooWorker
       #
       def install
         gemfile? do |klass|
-          klass.cmd('bundle install', retry: true)
+          klass.cmd('bundle install', retry: true, echo: true)
         end
       end
 

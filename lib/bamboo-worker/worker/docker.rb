@@ -23,8 +23,7 @@ module BambooWorker
         @host = opts[:r]
         @port = opts[:p]
         system(docker_command(script, args))
-        fail SystemCallError, 'System failed' unless
-          $CHILD_STATUS.exitstatus == 0
+        fail SystemCallError, 'System failed' unless $CHILD_STATUS.success?
       end
 
       private

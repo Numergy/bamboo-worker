@@ -78,7 +78,7 @@ module BambooWorker
     def build_custom_stage(stage, klass = self)
       cmds = *config[stage.to_s]
       cmds.each do |command|
-        klass.cmd(command, assert: assert_stage?(stage))
+        klass.cmd(command, assert: assert_stage?(stage), echo: true)
       end
     end
 
