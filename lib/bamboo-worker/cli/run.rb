@@ -13,8 +13,6 @@ BambooWorker::CLI.options.command 'run' do
 
   run do |opts, args|
     current_dir = File.expand_path(Dir.pwd)
-    dir_name = File.basename(current_dir)
-
     config = BambooWorker::Config.new(File.expand_path('~/.bamboo/worker.yml'))
     project_config = Travis::Yaml.load(File.read("#{current_dir}/#{opts[:c]}"))
     worker =
@@ -24,10 +22,15 @@ BambooWorker::CLI.options.command 'run' do
 
     BambooWorker::CLI.options.parse %W( build -c #{opts[:c]} -d #{opts[:d]})
 
-    files = Dir.glob("#{opts[:d]}/#{dir_name}*.sh")
+    files = Dir.glob("#{opts[:d]}/#{File.basename(current_dir)}*.sh")
     begin
       files.each do |file|
-        result = worker.run(dir_name, config, project_config, file, opts, args)
+        result = worker.run(current_dir,
+                            config,
+                            project_config,
+                            file,
+                            opts,
+                            args)
         fail SystemCallError, 'Can not run command' unless result
       end
     rescue SystemCallError => e

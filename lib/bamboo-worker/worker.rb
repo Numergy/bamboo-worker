@@ -21,14 +21,14 @@ module BambooWorker
 
       # Run script on worker
       #
-      # @param [String] _name Name of the project
+      # @param [String] _path Path of the project
       # @param [Config] _config Bamboo worker configuration
       # @param [Travis::Yaml::Nodes::Root] _project_config Configuration file
       # @param [String] _script Script to run on worker
       # @param [Slop] _opts Slop options
       # @param [Array] _args worker's specific arguments
       #
-      def run(_name, _config, _project_config, _script, _opts, _args)
+      def run(_path, _config, _project_config, _script, _opts, _args)
         fail NotImplementedError
       end
     end

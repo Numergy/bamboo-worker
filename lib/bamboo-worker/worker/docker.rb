@@ -14,7 +14,7 @@ module BambooWorker
 
       # Run docker command
       #
-      # @param [String] name Name of the project
+      # @param [String] path Path of the project
       # @param [Config] config Bamboo worker configuration
       # @param [Travis::Yaml::Nodes::Root] project_config Configuration file
       # @param [String] script Script to run on docker
@@ -23,10 +23,10 @@ module BambooWorker
       #
       # @return [String]
       #
-      def run(name, config, project_config, script, _opts, args)
+      def run(path, config, project_config, script, _opts, args)
         return false unless config.key?('docker')
 
-        @name = name
+        @path = path
         @config = config['docker']
         @project_config = project_config
 
@@ -50,18 +50,20 @@ module BambooWorker
       def docker_command(script, args)
         base_path = File.dirname(File.expand_path(script))
         remote_path = '/tmp/build'
+        script_path = '/tmp/script'
 
         return false if container.nil?
 
         cmd = @executable.dup
         cmd << ' run -t'
-        cmd << " -w '#{remote_path}/#{@name}'"
+        cmd << " -w '#{remote_path}'"
         cmd << " --entrypoint '/bin/bash'"
-        cmd << " -v #{base_path}:#{remote_path}"
+        cmd << " -v #{@path}:#{remote_path}"
+        cmd << " -v #{base_path}:#{script_path}"
         cmd << " '#{container}'" unless container.nil?
         cmd << " --login -c '"
-        cmd << "chmod +x #{remote_path}/#{File.basename(script)};"
-        cmd << " #{remote_path}/#{File.basename(script)}"
+        cmd << "chmod +x #{script_path}/#{File.basename(script)};"
+        cmd << " #{script_path}/#{File.basename(script)}"
         cmd << " #{args}" unless args.empty?
         cmd << "'"
         cmd

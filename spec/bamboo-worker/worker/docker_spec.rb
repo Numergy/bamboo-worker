@@ -51,10 +51,11 @@ module BambooWorker
 
     it 'should raise error when command failed' do
       @docker.should_receive(:system)
-        .with("/usr/bin/docker run -t -w '/tmp/build/test'" \
-              " --entrypoint '/bin/bash' -v /tmp:/tmp/build " \
+        .with("/usr/bin/docker run -t -w '/tmp/build'" \
+              " --entrypoint '/bin/bash' -v test:/tmp/build " \
+              '-v /tmp:/tmp/script ' \
               "'127.0.0.1:5000/ruby-builder'" \
-              " --login -c 'chmod +x /tmp/build/test.sh; /tmp/build/test.sh'")
+              " --login -c 'chmod +x /tmp/script/test.sh; /tmp/script/test.sh'")
         .and_return(true)
 
       Struct.new('TRAVIS_NOT_OK', :language)
@@ -81,10 +82,11 @@ module BambooWorker
 
     it 'should run script' do
       @docker.should_receive(:system)
-        .with("/usr/bin/docker run -t -w '/tmp/build/test'" \
-              " --entrypoint '/bin/bash' -v /tmp:/tmp/build " \
+        .with("/usr/bin/docker run -t -w '/tmp/build'" \
+              " --entrypoint '/bin/bash' -v test:/tmp/build " \
+              '-v /tmp:/tmp/script ' \
               "'127.0.0.1:5000/ruby-builder'" \
-              " --login -c 'chmod +x /tmp/build/test.sh; /tmp/build/test.sh'")
+              " --login -c 'chmod +x /tmp/script/test.sh; /tmp/script/test.sh'")
         .and_return(true)
 
       Struct.new('TRAVIS_OK', :language)
