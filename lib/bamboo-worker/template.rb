@@ -4,14 +4,14 @@ module BambooWorker
   class Template
     # Static: Render template with Erubis
     #
-    # Examples:
-    #
-    # BambooWorker::Template.render('Hello <%= title %>', {title: 'GoT'})
-    # # => "Hello GoT"
+    # Example:
+    #   BambooWorker::Template.render('Hello <%= title %>', {title: 'GoT'})
+    #   # => "Hello GoT"
     #
     # @param [String] template Template string to used for rendering
     # @param [String] data Data binding
-    # return [String]
+    # @return [String]
+    #
     def self.render(template, data = {})
       eruby = Erubis::Eruby.new(template)
       output = eruby.result(data)

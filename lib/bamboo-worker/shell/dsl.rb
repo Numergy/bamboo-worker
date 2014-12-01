@@ -7,7 +7,8 @@ module BambooWorker
     module Dsl
       # Execute command
       #
-      # @param [String] cmd Command to execute
+      # @param [String] code Command to execute
+      # @param [Array] args Arguments
       #
       def cmd(code, *args)
         node = Cmd.new(code, *merge_options(args))
@@ -16,7 +17,8 @@ module BambooWorker
 
       # Create node
       #
-      # @param [Mixed] cmd Command to execute
+      # @param [Mixed] code Command to execute
+      # @param [Array] args Arguments
       #
       def raw(code, *args)
         args = merge_options(args)

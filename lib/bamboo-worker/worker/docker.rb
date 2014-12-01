@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
 module BambooWorker
   module Worker
     # Docker worker
     class Docker < Base
       attr_reader :config, :project_config, :name
 
+      ##
+      # Initialize program
+      #
       def initialize
         super '/usr/bin/docker'
       end
@@ -14,7 +18,7 @@ module BambooWorker
       # @param [Config] config Bamboo worker configuration
       # @param [Travis::Yaml::Nodes::Root] project_config Configuration file
       # @param [String] script Script to run on docker
-      # @param [Slop] opts Slop options
+      # @param [Slop] _opts Slop options
       # @param [Array] args Docker arguments
       #
       # @return [String]
@@ -38,7 +42,6 @@ module BambooWorker
 
       # Generate docker command to run script
       #
-      # @param [Travis::Yaml::Nodes::Root] config Configuration file
       # @param [String] script Script to run on docker
       # @param [Array] args Arguments for docker command
       #
@@ -64,6 +67,10 @@ module BambooWorker
         cmd
       end
 
+      ##
+      # Return container address
+      #
+      # @return [String]
       def container
         @config['containers'][@project_config.language.to_s] if
           @config.key?('containers') &&

@@ -14,12 +14,12 @@ module BambooWorker
 
     it 'should create files' do
       Config.new('/.bamboo/worker.yml')
-      expect(File.directory?('/bamboo')).to eq(true)
+      expect(File.directory?('/.bamboo')).to eq(true)
       expect(File.exist?('/.bamboo/worker.yml')).to eq(true)
     end
 
     it 'should load content' do
-      Dir.mkdir('/bamboo')
+      Dir.mkdir('/.bamboo')
       yaml = <<-eos
 test:
   with: something

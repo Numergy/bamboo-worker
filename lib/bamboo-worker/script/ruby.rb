@@ -48,8 +48,8 @@ module BambooWorker
 
       # Test if gemfile exists
       #
-      # @param [Array] *args Arguments
-      # @param [Block] &block Block
+      # @param [Array] args Arguments
+      # @param [Block] block Block
       #
       def gemfile?(*args, &block)
         self.if("-f #{DEFAULTS['gemfile']}", *args, &block)

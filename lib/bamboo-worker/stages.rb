@@ -5,8 +5,32 @@ module BambooWorker
   class Stages
     include ::BambooWorker::Shell
 
-    attr_reader :config, :script, :nodes
+    ##
+    # Project configuration
+    #
+    # @return [Travis::Yaml::Node::Root]
+    #
+    attr_reader :config
 
+    ##
+    # Script language
+    #
+    # @return [BambooWorker::Script::Default]
+    #
+    attr_reader :script
+
+    ##
+    # Contains all command for stages
+    #
+    # @return [Array]
+    #
+    attr_reader :nodes
+
+    ##
+    # Stages list
+    #
+    # @return [Hash]
+    #
     STAGES = {
       builtin: [:setup,
                 :env,
