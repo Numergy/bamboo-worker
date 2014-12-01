@@ -26,8 +26,7 @@ module BambooWorker
                          {},
                          {},
                          '/tmp/test.sh',
-                         { r: '127.0.0.1',
-                           p: 5000 },
+                         {},
                          []))
         .to eq(false)
     end
