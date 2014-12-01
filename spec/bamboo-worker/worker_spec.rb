@@ -27,7 +27,7 @@ module BambooWorker
       File.chmod(0755, '/bin/worker')
       expect do
         Worker::Base.new('/bin/worker')
-          .run('host', 'port', 'config', '', '')
+          .run('host', 'port', '', 'config', '', '')
       end.to raise_error(NotImplementedError)
     end
   end

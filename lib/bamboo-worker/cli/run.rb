@@ -10,25 +10,25 @@ BambooWorker::CLI.options.command 'run' do
      default: 'docker')
   on(:c=, :config=, 'Build from file and run script (default: .travis.yml)',
      default: '.travis.yml')
-  on(:r=, :remote_addr=, 'Worker remote address')
-  on(:p=, :port=, 'Worker port address', as: Integer, default: 80)
 
   run do |opts, args|
     current_dir = File.expand_path(Dir.pwd)
     dir_name = File.basename(current_dir)
-    config = Travis::Yaml.load(File.read("#{current_dir}/#{opts[:c]}"))
 
-    BambooWorker::CLI.options.parse %W( build -c #{opts[:c]} -d #{opts[:d]})
-
+    config = BambooWorker::Config.new(File.expand_path('~/.bamboo/worker.yml'))
+    project_config = Travis::Yaml.load(File.read("#{current_dir}/#{opts[:c]}"))
     worker =
       Object.const_get('BambooWorker')
       .const_get('Worker')
       .const_get(opts[:w].capitalize).new
 
+    BambooWorker::CLI.options.parse %W( build -c #{opts[:c]} -d #{opts[:d]})
+
     files = Dir.glob("#{opts[:d]}/#{dir_name}*.sh")
     begin
       files.each do |file|
-        worker.run(dir_name, config, file, opts, args)
+        result = worker.run(dir_name, config, project_config, file, opts, args)
+        fail SystemCallError, 'Can not run command' unless result
       end
     rescue SystemCallError => e
       puts 'Build failed!'

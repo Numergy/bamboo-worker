@@ -13,16 +13,75 @@ module BambooWorker
       Dir.mkdir('/usr/bin')
       File.open('/usr/bin/docker', 'w+') { |f| f.write(true) }
       File.chmod(0755, '/usr/bin/docker')
+      @docker = Worker::Docker.new
     end
 
     it 'should initialize docker binary' do
-      expect(Worker::Docker.new.executable)
+      expect(@docker.executable)
         .to eq('/usr/bin/docker')
     end
 
+    it 'should return false if there is no information for docker in config' do
+      expect(@docker.run('test',
+                         {},
+                         {},
+                         '/tmp/test.sh',
+                         { r: '127.0.0.1',
+                           p: 5000 },
+                         []))
+        .to eq(false)
+    end
+
+    it 'should return false if container wasn\'t found' do
+      Struct.new('TRAVIS_ERROR', :language)
+      config = {
+        'docker' => {
+          'azdoazdazd' => {
+          }
+        }
+      }
+
+      expect(@docker.run('test',
+                         config,
+                         Struct::TRAVIS_ERROR.new('ruby'),
+                         '/tmp/test.sh',
+                         {},
+                         [])
+             ).to eq(false)
+    end
+
+    it 'should raise error when command failed' do
+      @docker.should_receive(:system)
+        .with("/usr/bin/docker run -t -w '/tmp/build/test'" \
+              " --entrypoint '/bin/bash' -v /tmp:/tmp/build " \
+              "'127.0.0.1:5000/ruby-builder'" \
+              " --login -c 'chmod +x /tmp/build/test.sh; /tmp/build/test.sh'")
+        .and_return(true)
+
+      Struct.new('TRAVIS_NOT_OK', :language)
+
+      $CHILD_STATUS = double
+      $CHILD_STATUS.should_receive(:success?).and_return(false)
+      config = {
+        'docker' => {
+          'containers' => {
+            'ruby' => '127.0.0.1:5000/ruby-builder'
+          }
+        }
+      }
+
+      expect do
+        @docker.run('test',
+                    config,
+                    Struct::TRAVIS_NOT_OK.new('ruby'),
+                    '/tmp/test.sh',
+                    {},
+                    [])
+      end.to raise_error(SystemCallError)
+    end
+
     it 'should run script' do
-      docker = Worker::Docker.new
-      docker.should_receive(:system)
+      @docker.should_receive(:system)
         .with("/usr/bin/docker run -t -w '/tmp/build/test'" \
               " --entrypoint '/bin/bash' -v /tmp:/tmp/build " \
               "'127.0.0.1:5000/ruby-builder'" \
@@ -34,36 +93,22 @@ module BambooWorker
       $CHILD_STATUS = double
       $CHILD_STATUS.should_receive(:success?).and_return(true)
 
-      expect(docker.run('test',
-                        Struct::TRAVIS_OK.new('ruby'),
-                        '/tmp/test.sh',
-                        { r: '127.0.0.1',
-                          p: 5000 },
-                        []))
-        .to be_nil
-    end
+      config = {
+        'docker' => {
+          'containers' => {
+            'ruby' => '127.0.0.1:5000/ruby-builder'
+          }
+        }
+      }
 
-    it 'should raise error when command failed' do
-      docker = Worker::Docker.new
-      docker.should_receive(:system)
-        .with("/usr/bin/docker run -t -w '/tmp/build/test'" \
-              " --entrypoint '/bin/bash' -v /tmp:/tmp/build " \
-              "'127.0.0.1:5000/ruby-builder'" \
-              " --login -c 'chmod +x /tmp/build/test.sh; /tmp/build/test.sh'")
-        .and_return(true)
-
-      Struct.new('TRAVIS_NOT_OK', :language)
-
-      $CHILD_STATUS = double
-      $CHILD_STATUS.should_receive(:success?).and_return(false)
-      expect do
-        docker.run('test',
-                   Struct::TRAVIS_NOT_OK.new('ruby'),
-                   '/tmp/test.sh',
-                   { r: '127.0.0.1',
-                     p: 5000 },
-                   [])
-      end.to raise_error(SystemCallError)
+      expect(@docker.run('test',
+                         config,
+                         Struct::TRAVIS_OK.new('ruby'),
+                         '/tmp/test.sh',
+                         { r: '127.0.0.1',
+                           p: 5000 },
+                         []))
+        .to eq(true)
     end
   end
 end

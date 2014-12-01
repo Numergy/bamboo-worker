@@ -2,7 +2,7 @@ module BambooWorker
   module Worker
     # Docker worker
     class Docker < Base
-      attr_reader :config, :host, :port, :name
+      attr_reader :config, :project_config, :name
 
       def initialize
         super '/usr/bin/docker'
@@ -10,20 +10,28 @@ module BambooWorker
 
       # Run docker command
       #
-      # @param [Travis::Yaml::Nodes::Root] config Configuration file
+      # @param [String] name Name of the project
+      # @param [Config] config Bamboo worker configuration
+      # @param [Travis::Yaml::Nodes::Root] project_config Configuration file
       # @param [String] script Script to run on docker
       # @param [Slop] opts Slop options
-      # @param [Array] args Arguments for docker command
+      # @param [Array] args Docker arguments
       #
       # @return [String]
       #
-      def run(name, config, script, opts, args)
+      def run(name, config, project_config, script, _opts, args)
+        return false unless config.key?('docker')
+
         @name = name
-        @config = config
-        @host = opts[:r]
-        @port = opts[:p]
-        system(docker_command(script, args))
+        @config = config['docker']
+        @project_config = project_config
+
+        command = docker_command(script, args)
+        return false unless command
+
+        system(command)
         fail SystemCallError, 'System failed' unless $CHILD_STATUS.success?
+        true
       end
 
       private
@@ -38,23 +46,28 @@ module BambooWorker
       #
       def docker_command(script, args)
         base_path = File.dirname(File.expand_path(script))
-        entrypoint = '/bin/bash'
         remote_path = '/tmp/build'
+
+        return false if container.nil?
 
         cmd = @executable.dup
         cmd << ' run -t'
         cmd << " -w '#{remote_path}/#{name}'"
-        cmd << " --entrypoint '#{entrypoint}'"
+        cmd << " --entrypoint '/bin/bash'"
         cmd << " -v #{base_path}:#{remote_path}"
-        cmd << " '#{@host}" unless @host.nil?
-        cmd << ":#{@port}" unless @port.nil?
-        cmd << "/#{@config.language}-builder'"
+        cmd << " '#{container}'" unless container.nil?
         cmd << " --login -c '"
         cmd << "chmod +x #{remote_path}/#{File.basename(script)};"
         cmd << " #{remote_path}/#{File.basename(script)}"
         cmd << " #{args}" unless args.empty?
         cmd << "'"
         cmd
+      end
+
+      def container
+        @config['containers'][@project_config.language.to_s] if
+          @config.key?('containers') &&
+          @config['containers'].key?(@project_config.language.to_s)
       end
     end
   end
