@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'builder', '~>3.2'
   s.add_dependency 'erubis', '~> 2.7'
   s.add_dependency 'slop', '~>3.6'
-  s.add_dependency 'travis-yaml', '~>0.1'
+  s.add_dependency 'travis-yaml', '0.1.0'
 
   s.add_development_dependency 'fakefs', '~>0.5'
   s.add_development_dependency 'rake', '~>10.0'
