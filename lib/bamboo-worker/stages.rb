@@ -77,7 +77,8 @@ module BambooWorker
     def run_stage(stage)
       export 'BAMBOO_STAGE', stage, echo: false
       if stage == :after_result
-        build_builtin_stage(stage)
+        after_result
+        build_custom_stage(stage)
       elsif @script.respond_to?(stage, false) && !config.key?(stage.to_s)
         @script.send(stage)
       else
