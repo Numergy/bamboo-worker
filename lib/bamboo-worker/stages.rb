@@ -78,7 +78,6 @@ module BambooWorker
       export 'BAMBOO_STAGE', stage, echo: false
       if stage == :after_result
         after_result
-        build_custom_stage(stage)
       elsif @script.respond_to?(stage, false) && !config.key?(stage.to_s)
         @script.send(stage)
       else
@@ -143,13 +142,15 @@ module BambooWorker
     # After result
     #
     def after_result
-      self.if('$TEST_RESULT = 0') do |klass|
+      raw 'bamboo_result $?'
+      self.if('$BAMBOO_TEST_RESULT = 0') do |klass|
         build_custom_stage('after_success', klass)
       end if config['after_success']
 
-      self.if('$TEST_RESULT != 0') do |klass|
+      self.if('$BAMBOO_TEST_RESULT != 0') do |klass|
         build_custom_stage('after_failure', klass)
       end if config['after_failure']
+      build_custom_stage(:after_result)
     end
 
     private
