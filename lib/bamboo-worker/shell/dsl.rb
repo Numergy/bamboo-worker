@@ -90,7 +90,8 @@ module BambooWorker
       # Create else statement
       #
       def else(*args, &block)
-        nodes.last.raw Else.new(*merge_options(args), &block)
+        args = merge_options(args)
+        nodes.last.raw Else.new(args, &block)
         nodes.last
       end
 
