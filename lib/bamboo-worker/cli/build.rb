@@ -9,7 +9,7 @@ BambooWorker::CLI.options.command 'build' do
   on(:c=, :config=, 'Build from file and run script (default: .travis.yml)',
      default: '.travis.yml')
   on(:d=, :destination=, 'Destination path to saving files (default: /tmp)',
-     default: '/tmp')
+     default: Dir.tmpdir)
 
   run do |opts, _args|
     current_dir = File.expand_path(Dir.pwd)

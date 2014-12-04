@@ -25,8 +25,10 @@ module BambooWorker
       Dir.mkdir('/bin')
       File.open('/bin/worker', 'w+') { |f| f.write(true) }
       File.chmod(0755, '/bin/worker')
-      expect { Worker::Base.new('/bin/worker').run('', '') }
-        .to raise_error(NotImplementedError)
+      expect do
+        Worker::Base.new('/bin/worker')
+          .run('host', 'port', '', 'config', '', '')
+      end.to raise_error(NotImplementedError)
     end
   end
 end

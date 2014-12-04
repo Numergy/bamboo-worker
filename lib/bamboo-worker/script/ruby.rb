@@ -33,23 +33,23 @@ module BambooWorker
       # Default install action for ruby
       #
       def install
-        gemfile? do |klass|
-          klass.cmd('bundle install', retry: true)
-        end
+        gemfile?(then: 'bundle install', retry: true, echo: true)
       end
 
       # Default test script for ruby
       #
       def script
-        gemfile?(then: 'bundle exec rake', else: 'rake')
+        gemfile?(then: 'bundle exec rake', else: 'rake',
+                 assert: true,
+                 echo: true)
       end
 
       private
 
       # Test if gemfile exists
       #
-      # @param [Array] *args Arguments
-      # @param [Block] &block Block
+      # @param [Array] args Arguments
+      # @param [Block] block Block
       #
       def gemfile?(*args, &block)
         self.if("-f #{DEFAULTS['gemfile']}", *args, &block)

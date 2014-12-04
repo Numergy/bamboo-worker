@@ -13,22 +13,102 @@ module BambooWorker
       Dir.mkdir('/usr/bin')
       File.open('/usr/bin/docker', 'w+') { |f| f.write(true) }
       File.chmod(0755, '/usr/bin/docker')
+      @docker = Worker::Docker.new
     end
 
     it 'should initialize docker binary' do
-      expect(Worker::Docker.new.executable)
+      expect(@docker.executable)
         .to eq('/usr/bin/docker')
     end
 
-    it 'should run script' do
-      docker = Worker::Docker.new
-      docker.should_receive(:exec)
-        .with('/usr/bin/docker run -t -i --entrypoint ' \
-              "'/bin/bash' -v /tmp:/tmp/build  --login -c" \
-              " 'cd /tmp/build'; ./tmp/test.sh")
+    it 'should return false if there is no information for docker in config' do
+      expect(@docker.run('test',
+                         {},
+                         {},
+                         '/tmp/test.sh',
+                         {},
+                         []))
+        .to eq(false)
+    end
+
+    it 'should return false if container wasn\'t found' do
+      Struct.new('TRAVIS_ERROR', :language)
+      config = {
+        'docker' => {
+          'azdoazdazd' => {
+          }
+        }
+      }
+
+      expect(@docker.run('test',
+                         config,
+                         Struct::TRAVIS_ERROR.new('ruby'),
+                         '/tmp/test.sh',
+                         {},
+                         [])
+             ).to eq(false)
+    end
+
+    it 'should raise error when command failed' do
+      @docker.should_receive(:system)
+        .with("/usr/bin/docker run -t -w '/tmp/build'" \
+              " --entrypoint '/bin/bash' -v test:/tmp/build " \
+              '-v /tmp:/tmp/script ' \
+              "'127.0.0.1:5000/ruby-builder'" \
+              " --login -c 'chmod +x /tmp/script/test.sh; /tmp/script/test.sh'")
         .and_return(true)
 
-      expect(docker.run('/tmp/test.sh', []))
+      Struct.new('TRAVIS_NOT_OK', :language)
+
+      $CHILD_STATUS = double
+      $CHILD_STATUS.should_receive(:success?).and_return(false)
+      config = {
+        'docker' => {
+          'containers' => {
+            'ruby' => '127.0.0.1:5000/ruby-builder'
+          }
+        }
+      }
+
+      expect do
+        @docker.run('test',
+                    config,
+                    Struct::TRAVIS_NOT_OK.new('ruby'),
+                    '/tmp/test.sh',
+                    {},
+                    [])
+      end.to raise_error(SystemCallError)
+    end
+
+    it 'should run script' do
+      @docker.should_receive(:system)
+        .with("/usr/bin/docker run -t -w '/tmp/build'" \
+              " --entrypoint '/bin/bash' -v test:/tmp/build " \
+              '-v /tmp:/tmp/script ' \
+              "'127.0.0.1:5000/ruby-builder'" \
+              " --login -c 'chmod +x /tmp/script/test.sh; /tmp/script/test.sh'")
+        .and_return(true)
+
+      Struct.new('TRAVIS_OK', :language)
+
+      $CHILD_STATUS = double
+      $CHILD_STATUS.should_receive(:success?).and_return(true)
+
+      config = {
+        'docker' => {
+          'containers' => {
+            'ruby' => '127.0.0.1:5000/ruby-builder'
+          }
+        }
+      }
+
+      expect(@docker.run('test',
+                         config,
+                         Struct::TRAVIS_OK.new('ruby'),
+                         '/tmp/test.sh',
+                         { r: '127.0.0.1',
+                           p: 5000 },
+                         []))
         .to eq(true)
     end
   end

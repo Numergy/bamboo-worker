@@ -12,8 +12,9 @@ module BambooWorker
       # Initialize conditionnal class
       #
       # @param [String] condition Shell condition
-      # @param [Array] *args Arguments
-      # @param [Block] &_block Block
+      # @param [Array] args Arguments
+      # @param [Block] _block Block
+      #
       def initialize(condition, *args, &_block)
         args.unshift(args.last.delete(:then)) if
           args.last.is_a?(Hash) && args.last[:then]

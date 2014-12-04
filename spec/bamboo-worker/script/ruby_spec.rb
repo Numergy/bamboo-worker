@@ -37,14 +37,15 @@ module BambooWorker
       @ruby.install
       expect(@ruby.nodes.map(&:to_s))
         .to eq(["if [[ -f Gemfile ]]; then\n  " \
-                "bamboo_cmd bundle\\ install --retry\nfi"])
+                "bamboo_cmd bundle\\ install --echo --retry\nfi"])
     end
 
     it 'should script' do
       @ruby.script
       expect(@ruby.nodes.map(&:to_s))
         .to eq(["if [[ -f Gemfile ]]; then\n  " \
-                "bundle exec rake\nelse\n  rake\nfi"])
+                "bamboo_cmd bundle\\ exec\\ rake --assert --echo\nelse\n  " \
+                "bamboo_cmd rake --assert --echo\nfi"])
     end
   end
 end

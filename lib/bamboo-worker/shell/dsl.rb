@@ -7,7 +7,8 @@ module BambooWorker
     module Dsl
       # Execute command
       #
-      # @param [String] cmd Command to execute
+      # @param [String] code Command to execute
+      # @param [Array] args Arguments
       #
       def cmd(code, *args)
         node = Cmd.new(code, *merge_options(args))
@@ -16,7 +17,8 @@ module BambooWorker
 
       # Create node
       #
-      # @param [Mixed] cmd Command to execute
+      # @param [Mixed] code Command to execute
+      # @param [Array] args Arguments
       #
       def raw(code, *args)
         args = merge_options(args)
@@ -88,7 +90,8 @@ module BambooWorker
       # Create else statement
       #
       def else(*args, &block)
-        nodes.last.raw Else.new(*merge_options(args), &block)
+        args = merge_options(args)
+        nodes.last.raw Else.new(args, &block)
         nodes.last
       end
 

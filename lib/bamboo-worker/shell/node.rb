@@ -15,7 +15,7 @@ module BambooWorker
       end
 
       def to_s
-        code ? code.indent(@level) : code
+        code.is_a?(String) ? code.indent(@level) : code.to_s
       end
 
       def escape(code)

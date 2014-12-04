@@ -5,8 +5,32 @@ module BambooWorker
   class Stages
     include ::BambooWorker::Shell
 
-    attr_reader :config, :script, :nodes
+    ##
+    # Project configuration
+    #
+    # @return [Travis::Yaml::Node::Root]
+    #
+    attr_reader :config
 
+    ##
+    # Script language
+    #
+    # @return [BambooWorker::Script::Default]
+    #
+    attr_reader :script
+
+    ##
+    # Contains all command for stages
+    #
+    # @return [Array]
+    #
+    attr_reader :nodes
+
+    ##
+    # Stages list
+    #
+    # @return [Hash]
+    #
     STAGES = {
       builtin: [:setup,
                 :env,
@@ -53,7 +77,7 @@ module BambooWorker
     def run_stage(stage)
       export 'BAMBOO_STAGE', stage, echo: false
       if stage == :after_result
-        build_builtin_stage(stage)
+        after_result
       elsif @script.respond_to?(stage, false) && !config.key?(stage.to_s)
         @script.send(stage)
       else
@@ -78,7 +102,7 @@ module BambooWorker
     def build_custom_stage(stage, klass = self)
       cmds = *config[stage.to_s]
       cmds.each do |command|
-        klass.cmd(command, assert: assert_stage?(stage))
+        klass.cmd(command, assert: assert_stage?(stage), echo: true)
       end
     end
 
@@ -109,19 +133,24 @@ module BambooWorker
     # Announce build
     #
     def announce
+      @script.newline
+      @script.cmd('echo "Bamboo Worker"')
+      @script.newline
       @script.announce
     end
 
     # After result
     #
     def after_result
-      self.if('$TEST_RESULT = 0') do |klass|
+      raw 'bamboo_result $?'
+      self.if('$BAMBOO_TEST_RESULT = 0') do |klass|
         build_custom_stage('after_success', klass)
       end if config['after_success']
 
-      self.if('$TEST_RESULT != 0') do |klass|
+      self.if('$BAMBOO_TEST_RESULT != 0') do |klass|
         build_custom_stage('after_failure', klass)
       end if config['after_failure']
+      build_custom_stage(:after_result)
     end
 
     private

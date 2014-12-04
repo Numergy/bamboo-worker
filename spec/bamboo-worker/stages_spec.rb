@@ -60,6 +60,9 @@ after_script:
                    'export BAMBOO_STAGE=env',
                    'export CONTINUOUS_INTEGRATION=true',
                    'export BAMBOO_STAGE=announce',
+                   'echo',
+                   'echo "Bamboo Worker"',
+                   'echo',
                    'ruby --version',
                    'rbenv --version',
                    "if [[ -f Gemfile ]]; then\n  bundle --version\nfi"]
@@ -76,26 +79,30 @@ after_script:
                 :script,
                 :after_result,
                 :after_script])
-      available = ["if [[ -f Gemfile ]]; then\n  bamboo_cmd bundle\\ install" \
+      available = ["if [[ -f Gemfile ]]; then\n  bamboo_cmd " \
+                   'bundle\ install --echo' \
                    " --retry\nfi",
                    'export BAMBOO_STAGE=before_install',
-                   'bamboo_cmd before_install_command_1 --assert',
-                   'bamboo_cmd before_install_command_2 --assert',
+                   'bamboo_cmd before_install_command_1 --assert --echo',
+                   'bamboo_cmd before_install_command_2 --assert --echo',
                    'export BAMBOO_STAGE=before_script',
                    'export BAMBOO_STAGE=install',
-                   'bamboo_cmd before_script_command_1 --assert',
-                   'bamboo_cmd before_script_command_2 --assert',
+                   'bamboo_cmd before_script_command_1 --assert --echo',
+                   'bamboo_cmd before_script_command_2 --assert --echo',
                    'export BAMBOO_STAGE=script',
-                   'bamboo_cmd script_command_1 --assert',
-                   'bamboo_cmd script_command_2 --assert',
+                   'bamboo_cmd script_command_1 --assert --echo',
+                   'bamboo_cmd script_command_2 --assert --echo',
                    'export BAMBOO_STAGE=after_result',
-                   "if [[ $TEST_RESULT = 0 ]]; then\n  " \
-                   "success_command_1\n  success_command_2\nfi",
-                   "if [[ $TEST_RESULT != 0 ]]; then\n  " \
-                   "failure_command_1\n  failure_command_2\nfi",
+                   'bamboo_result $?',
+                   "if [[ $BAMBOO_TEST_RESULT = 0 ]]; then\n  " \
+                   "bamboo_cmd success_command_1 --echo\n  " \
+                   "bamboo_cmd success_command_2 --echo\nfi",
+                   "if [[ $BAMBOO_TEST_RESULT != 0 ]]; then\n  " \
+                   "bamboo_cmd failure_command_1 --echo\n  " \
+                   "bamboo_cmd failure_command_2 --echo\nfi",
                    'export BAMBOO_STAGE=after_script',
-                   'after_script_command_1',
-                   'after_script_command_2']
+                   'bamboo_cmd after_script_command_1 --echo',
+                   'bamboo_cmd after_script_command_2 --echo']
       @stages.nodes.each do |stage|
         expect(available).to include(stage.to_s)
       end

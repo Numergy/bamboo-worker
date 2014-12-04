@@ -4,22 +4,44 @@ BambooWorker::CLI.options.command 'run' do
   description 'Run bash script on worker'
   separator "\nOptions:\n"
 
-  on(:d=, :directory=, 'Path where are stored scripts (default: /tmp)',
-     default: '/tmp')
+  on(:d=, :destination=, 'Destination path to saving files (default: /tmp)',
+     default: Dir.tmpdir)
   on(:w=, :worker=, 'Worker to use to run scripts (default: docker)',
      default: 'docker')
+  on(:c=, :config=, 'Build from file and run script (default: .travis.yml)',
+     default: '.travis.yml')
 
   run do |opts, args|
-    dir_name = File.basename(File.expand_path(Dir.pwd))
-
+    current_dir = File.expand_path(Dir.pwd)
+    config = BambooWorker::Config.new(File.expand_path('~/.bamboo/worker.yml'))
+    project_config = Travis::Yaml.load(File.read("#{current_dir}/#{opts[:c]}"))
     worker =
       Object.const_get('BambooWorker')
       .const_get('Worker')
       .const_get(opts[:w].capitalize).new
 
-    scripts = Dir.glob("#{opts[:d]}/#{dir_name}*.sh")
-    scripts.each do |script|
-      worker.run(script, args)
+    BambooWorker::CLI.options.parse %W( build -c #{opts[:c]} -d #{opts[:d]})
+
+    files = Dir.glob("#{opts[:d]}/#{File.basename(current_dir)}*.sh")
+    begin
+      files.each do |file|
+        result = worker.run(current_dir,
+                            config,
+                            project_config,
+                            file,
+                            opts,
+                            args)
+        fail SystemCallError, 'Can not run command' unless result
+      end
+    rescue SystemCallError => e
+      puts 'Build failed!'
+      puts e.message
+      exit 1
+    ensure
+      files.each do |file|
+        puts "Remove #{file}"
+        File.unlink(file)
+      end
     end
   end
 end
