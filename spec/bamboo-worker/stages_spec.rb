@@ -51,7 +51,8 @@ after_script:
                    "sed 's/[^0-9.]*\\([0-9.]*-[a-z0-9]*\\).*/\\1/'" \
                    "| sed -e 's/^[ \\t]*//')",
                    "if [[ -z \"$RBENV_VERSION\" ]]; then\n  " \
-                   "echo '1.9.3 not found'\n  exit 1\nfi",
+                   "export BAMBOO_CMD=no_script\n  " \
+                   "echo '1.9.3 not found'\nexit 1\nfi",
                    'export BAMBOO_STAGE=setup',
                    'export BAMBOO=true',
                    'export CI=true',
