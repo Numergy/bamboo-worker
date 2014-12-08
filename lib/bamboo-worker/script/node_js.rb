@@ -3,7 +3,7 @@
 module BambooWorker
   # Script module
   class Script
-    # Ruby language
+    # NodeJs language
     class NodeJs < Default
       # Setup language with ndenv
       #
@@ -27,6 +27,8 @@ module BambooWorker
         cmd 'ndenv --version'
       end
 
+      # Default install action for node js
+      #
       def install
         package?(then: 'npm install', retry: true, echo: true)
       end

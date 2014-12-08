@@ -3,14 +3,14 @@
 module BambooWorker
   # Script module
   class Script
-    # Ruby language
+    #  language
     class Php < Default
       # Setup language with phpenv
       #
       def setup
         super
         # Phpenv is a fork of Rbenv, so it's normal to use the RBENV_VERSION
-        # variables -_-'
+        # variable -_-'
         #
         export 'RBENV_VERSION', "$(phpenv versions | grep #{@config.php} " \
         "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/'" \
