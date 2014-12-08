@@ -26,9 +26,9 @@ module BambooWorker
       # Announce ruby, rbenv and bundle version
       #
       def announce
-        cmd 'ruby --version'
-        cmd 'rbenv --version'
-        gemfile?(then: 'bundle --version')
+        cmd 'ruby --version', echo: true
+        cmd 'rbenv --version', echo: true
+        gemfile?(then: 'bundle --version', echo: true)
       end
 
       # Default install action for ruby

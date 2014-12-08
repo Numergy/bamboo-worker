@@ -31,8 +31,8 @@ php: 5.4')
     it 'should announce' do
       @php.announce
       expect(@php.nodes.map(&:to_s))
-        .to eq(['php --version',
-                'phpenv --version'])
+        .to eq(['bamboo_cmd php\\ --version --echo',
+                'bamboo_cmd phpenv\\ --version --echo'])
     end
 
     it 'should script' do

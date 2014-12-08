@@ -29,9 +29,9 @@ python: 3.3')
     it 'should announce' do
       @python.announce
       expect(@python.nodes.map(&:to_s))
-        .to eq(['python --version',
-                'pip --version',
-                'pyenv --version'])
+        .to eq(['bamboo_cmd python\\ --version --echo',
+                'bamboo_cmd pip\\ --version --echo',
+                'bamboo_cmd pyenv\\ --version --echo'])
     end
 
     it 'should install' do

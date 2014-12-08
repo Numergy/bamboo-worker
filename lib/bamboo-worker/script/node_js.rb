@@ -22,9 +22,9 @@ module BambooWorker
       # Announce node_js and ndenv version
       #
       def announce
-        cmd 'node --version'
-        cmd 'npm --version'
-        cmd 'ndenv --version'
+        cmd 'node --version', echo: true
+        cmd 'npm --version', echo: true
+        cmd 'ndenv --version', echo: true
       end
 
       # Default install action for node js

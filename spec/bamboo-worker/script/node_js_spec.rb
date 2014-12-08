@@ -31,9 +31,9 @@ node: 0.10')
     it 'should announce' do
       @node_js.announce
       expect(@node_js.nodes.map(&:to_s))
-        .to eq(['node --version',
-                'npm --version',
-                'ndenv --version'])
+        .to eq(['bamboo_cmd node\\ --version --echo',
+                'bamboo_cmd npm\\ --version --echo',
+                'bamboo_cmd ndenv\\ --version --echo'])
     end
 
     it 'should install' do

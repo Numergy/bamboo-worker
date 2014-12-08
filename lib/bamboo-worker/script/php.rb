@@ -25,8 +25,8 @@ module BambooWorker
       # Announce php and phpenv version
       #
       def announce
-        cmd 'php --version'
-        cmd 'phpenv --version'
+        cmd 'php --version', echo: true
+        cmd 'phpenv --version', echo: true
       end
 
       # Default test script for php

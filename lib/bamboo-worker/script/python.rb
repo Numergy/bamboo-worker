@@ -23,9 +23,9 @@ module BambooWorker
       # Announce python, pyenv and bundle version
       #
       def announce
-        cmd 'python --version'
-        cmd 'pip --version'
-        cmd 'pyenv --version'
+        cmd 'python --version', echo: true
+        cmd 'pip --version', echo: true
+        cmd 'pyenv --version', echo: true
       end
 
       # Default install action for python
