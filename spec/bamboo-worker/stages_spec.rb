@@ -61,6 +61,7 @@ after_script:
                    'export BAMBOO_STAGE=env',
                    'export CONTINUOUS_INTEGRATION=true',
                    'export BAMBOO_STAGE=announce',
+                   'export BAMBOO_RUBY_VERSION=1.9.3',
                    'echo',
                    'echo "Bamboo Worker"',
                    'echo',

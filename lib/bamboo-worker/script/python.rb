@@ -16,6 +16,8 @@ module BambooWorker
         self.if('-z "$PYENV_VERSION"') do |klass|
           klass.failure("#{@config.python} not found")
         end
+
+        export('BAMBOO_PYTHON_VERSION', @config.python, echo: false)
       end
 
       # Announce python, pyenv and bundle version

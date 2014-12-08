@@ -19,6 +19,8 @@ module BambooWorker
         self.if('-z "$RBENV_VERSION"') do |klass|
           klass.failure("#{@config.ruby} not found")
         end
+
+        export('BAMBOO_RUBY_VERSION', @config.ruby, echo: false)
       end
 
       # Announce ruby, rbenv and bundle version
