@@ -22,7 +22,7 @@ python: 3.3')
                 "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/'| " \
                 "sed -e 's/^[ \\t]*//')",
                 "if [[ -z \"$PYENV_VERSION\" ]]; then\n  export " \
-                "BAMBOO_CMD=no_script\n  echo '3.3 not found'\nexit 1\nfi"])
+                "BAMBOO_CMD=no_script\n  echo '3.3 not found'\n  exit 1\nfi"])
     end
 
     it 'should announce' do

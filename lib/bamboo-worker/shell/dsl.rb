@@ -50,7 +50,7 @@ module BambooWorker
       def failure(message)
         export 'BAMBOO_CMD', 'no_script', echo: false
         echo message
-        raw 'exit 1'
+        cmd 'exit 1'
       end
 
       # Display failure message
