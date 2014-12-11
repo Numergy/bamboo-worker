@@ -19,7 +19,9 @@ module BambooWorker
       Travis::Yaml.matrix(file_content).each do |matrix|
         begin
           require "bamboo-worker/script/#{matrix.language}"
-          script = Script.const_get(matrix.language.capitalize).new(matrix)
+          script = Script.const_get(matrix.language
+                                      .split('_')
+                                      .collect(&:capitalize).join).new(matrix)
         rescue LoadError
           raise ArgumentError, "Can't load \"#{matrix.language}\" language"
         end

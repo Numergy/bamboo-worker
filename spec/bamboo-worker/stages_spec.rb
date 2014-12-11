@@ -65,9 +65,10 @@ after_script:
                    'echo',
                    'echo "Bamboo Worker"',
                    'echo',
-                   'ruby --version',
-                   'rbenv --version',
-                   "if [[ -f Gemfile ]]; then\n  bundle --version\nfi"]
+                   'bamboo_cmd ruby\\ --version --echo',
+                   'bamboo_cmd rbenv\\ --version --echo',
+                   "if [[ -f Gemfile ]]; then\n  bamboo_cmd " \
+                   "bundle\\ --version --echo\nfi"]
       @stages.nodes.each do |stage|
         expect(available).to include(stage.to_s)
       end

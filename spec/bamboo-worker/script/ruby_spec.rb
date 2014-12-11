@@ -30,9 +30,10 @@ module BambooWorker
     it 'should announce' do
       @ruby.announce
       expect(@ruby.nodes.map(&:to_s))
-        .to eq(['ruby --version',
-                'rbenv --version',
-                "if [[ -f Gemfile ]]; then\n  bundle --version\nfi"])
+        .to eq(['bamboo_cmd ruby\\ --version --echo',
+                'bamboo_cmd rbenv\\ --version --echo',
+                "if [[ -f Gemfile ]]; then\n  bamboo_cmd " \
+                "bundle\\ --version --echo\nfi"])
     end
 
     it 'should install' do

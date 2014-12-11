@@ -55,7 +55,7 @@ module BambooWorker
         return false if container.nil?
 
         cmd = @executable.dup
-        cmd << ' run -t'
+        cmd << ' run -t --rm'
         cmd << " -w '#{remote_path}'"
         cmd << " --entrypoint '/bin/bash'"
         cmd << " -v #{@path}:#{remote_path}"
