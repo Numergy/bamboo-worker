@@ -60,7 +60,7 @@ module BambooWorker
         cmd << " --entrypoint '/bin/bash'"
         cmd << " -v #{@path}:#{remote_path}"
         cmd << " -v #{base_path}:#{script_path}"
-        cmd << " '#{container}'" unless container.nil?
+        cmd << " '#{container}'"
         cmd << " --login -c '"
         cmd << "chmod +x #{script_path}/#{File.basename(script)};"
         cmd << " #{script_path}/#{File.basename(script)}"
