@@ -8,7 +8,6 @@ module BambooWorker
     # @return [Hash]
     #
     SLOP_OPTIONS = {
-      strict: true,
       help: true,
       banner: 'Usage: bamboo-worker [COMMAND] [OPTIONS]'
     }

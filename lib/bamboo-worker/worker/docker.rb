@@ -60,11 +60,11 @@ module BambooWorker
         cmd << " --entrypoint '/bin/bash'"
         cmd << " -v #{@path}:#{remote_path}"
         cmd << " -v #{base_path}:#{script_path}"
+        cmd << " #{args.join(' ')}" unless args.empty?
         cmd << " '#{container}'"
         cmd << " --login -c '"
         cmd << "chmod +x #{script_path}/#{File.basename(script)};"
         cmd << " #{script_path}/#{File.basename(script)}"
-        cmd << " #{args}" unless args.empty?
         cmd << "'"
         cmd
       end

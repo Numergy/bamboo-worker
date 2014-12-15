@@ -11,7 +11,6 @@ module BambooWorker
       it 'should return options' do
         options = CLI.options
         expect(options).to be_a(::Slop)
-        expect(options.config[:strict]).to be_truthy
         expect(options.config[:banner])
           .to eq('Usage: bamboo-worker [COMMAND] [OPTIONS]')
         expect(options.to_s)
