@@ -39,8 +39,8 @@ module BambooWorker
                :install,
                :before_script,
                :script,
-               :after_result,
-               :after_script]
+               :after_script,
+               :after_result]
     }
 
     # Initialize script
