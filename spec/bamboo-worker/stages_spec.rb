@@ -80,8 +80,8 @@ after_script:
                 :install,
                 :before_script,
                 :script,
-                :after_result,
-                :after_script])
+                :after_script,
+                :after_result])
       available = ["if [[ -f Gemfile ]]; then\n  bamboo_cmd " \
                    'bundle\ install --echo' \
                    " --retry\nfi",
