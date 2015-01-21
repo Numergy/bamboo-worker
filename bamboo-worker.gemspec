@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
 
-  s.required_ruby_version = '~> 1.9.3'
+  s.required_ruby_version = '>= 1.9.3'
 
   s.add_dependency 'builder', '~>3.2'
   s.add_dependency 'erubis', '~> 2.7'
