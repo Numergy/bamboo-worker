@@ -34,7 +34,7 @@ module BambooWorker
       # Default install action for ruby
       #
       def install
-        gemfile?(then: 'bundle install', retry: true, echo: true)
+        gemfile?(then: 'bundle install --jobs=3', retry: true, echo: true)
       end
 
       # Default test script for ruby
