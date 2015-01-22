@@ -16,6 +16,7 @@ lib/bamboo-worker/config.rb
 lib/bamboo-worker/core/string/indent.rb
 lib/bamboo-worker/script.rb
 lib/bamboo-worker/script/default.rb
+lib/bamboo-worker/script/java.rb
 lib/bamboo-worker/script/node_js.rb
 lib/bamboo-worker/script/php.rb
 lib/bamboo-worker/script/python.rb
@@ -36,6 +37,7 @@ lib/bamboo-worker/worker/docker.rb
 spec/bamboo-worker/cli_spec.rb
 spec/bamboo-worker/config_spec.rb
 spec/bamboo-worker/core/string/indent_spec.rb
+spec/bamboo-worker/script/java_spec.rb
 spec/bamboo-worker/script/node_js_spec.rb
 spec/bamboo-worker/script/php_spec.rb
 spec/bamboo-worker/script/python_spec.rb
