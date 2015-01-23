@@ -16,7 +16,7 @@ module BambooWorker
         "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/'" \
         "| sed -e 's/^[ \\t]*//')"
         self.if('-z "$RBENV_VERSION"') do |klass|
-          klass.failure("#{@config.php} not found")
+          klass.failure("PHP version '#{@config.php}' not found")
         end
 
         export('BAMBOO_PHP_VERSION', @config.php, echo: false)

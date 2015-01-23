@@ -52,7 +52,7 @@ after_script:
                    "| sed -e 's/^[ \\t]*//')",
                    "if [[ -z \"$RBENV_VERSION\" ]]; then\n  " \
                    "export BAMBOO_CMD=no_script\n  " \
-                   "echo '1.9.3 not found'\n  exit 1\nfi",
+                   "echo 'Ruby version \\''1.9.3\\'' not found'\n  exit 1\nfi",
                    'export BAMBOO_STAGE=setup',
                    'export BAMBOO=true',
                    'export CI=true',

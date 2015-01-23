@@ -24,7 +24,7 @@ php: 5.4')
                 " 's/^[ \\t]*//')",
                 "if [[ -z \"$RBENV_VERSION\" ]]; then\n  " \
                 "export BAMBOO_CMD=no_script\n  " \
-                "echo '5.4 not found'\n  exit 1\nfi",
+                "echo 'PHP version \\''5.4\\'' not found'\n  exit 1\nfi",
                 'export BAMBOO_PHP_VERSION=5.4'])
     end
 

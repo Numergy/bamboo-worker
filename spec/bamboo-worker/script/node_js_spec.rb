@@ -24,7 +24,7 @@ node: 0.10')
                 " 's/^[ \\t]*//')",
                 "if [[ -z \"$NDENV_VERSION\" ]]; then\n  " \
                 "export BAMBOO_CMD=no_script\n  " \
-                "echo '0.10 not found'\n  exit 1\nfi",
+                "echo 'Node js version \\''0.10\\'' not found'\n  exit 1\nfi",
                 'export BAMBOO_NODE_VERSION=0.10'])
     end
 

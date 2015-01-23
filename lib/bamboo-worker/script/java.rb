@@ -14,7 +14,7 @@ module BambooWorker
                "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/'" \
                "| sed -e 's/^[ \\t]*//')")
         self.if('-z "$JENV_VERSION"') do |klass|
-          klass.failure("Java #{@config.jdk} not found")
+          klass.failure("Java version '#{@config.jdk}' not found")
         end
 
         export('BAMBOO_JAVA_VERSION', @config.jdk, echo: false)

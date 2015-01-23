@@ -14,7 +14,7 @@ module BambooWorker
         "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/'" \
         "| sed -e 's/^[ \\t]*//')"
         self.if('-z "$PYENV_VERSION"') do |klass|
-          klass.failure("#{@config.python} not found")
+          klass.failure("Python version '#{@config.python}' not found")
         end
 
         export('BAMBOO_PYTHON_VERSION', @config.python, echo: false)
