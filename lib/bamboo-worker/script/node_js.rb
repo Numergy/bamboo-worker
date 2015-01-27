@@ -13,7 +13,7 @@ module BambooWorker
         "| tail -1 | sed 's/[^0-9.]*\\(v[0-9.]*\\).*/\\1/'" \
         "| sed -e 's/^[ \\t]*//')"
         self.if('-z "$NDENV_VERSION"') do |klass|
-          klass.failure("#{@config.node_js} not found")
+          klass.failure("Node js version '#{@config.node_js}' not found")
         end
 
         export('BAMBOO_NODE_VERSION', @config.node_js, echo: false)

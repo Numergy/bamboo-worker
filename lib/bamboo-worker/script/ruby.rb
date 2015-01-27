@@ -17,7 +17,7 @@ module BambooWorker
         "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*-[a-z0-9]*\\).*/\\1/'" \
         "| sed -e 's/^[ \\t]*//')"
         self.if('-z "$RBENV_VERSION"') do |klass|
-          klass.failure("#{@config.ruby} not found")
+          klass.failure("Ruby version '#{@config.ruby}' not found")
         end
 
         export('BAMBOO_RUBY_VERSION', @config.ruby, echo: false)
