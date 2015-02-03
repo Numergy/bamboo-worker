@@ -35,7 +35,10 @@ eos
       config['this'] = 'is sparta!'
       config.save
       expect(File.read('/.bamboo/worker.yml'))
-        .to eq("--- !ruby/hash:BambooWorker::Config\nthis: is sparta!\n")
+        .to eq("--- !ruby/hash-with-ivars:BambooWorker::Config\n" \
+               "elements:\n  this: is sparta!\nivars:\n" \
+               '  :@config_file: "/.bamboo/worker.yml"' \
+               "\n")
     end
   end
 end
