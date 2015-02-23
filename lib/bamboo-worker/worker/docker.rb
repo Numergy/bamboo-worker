@@ -56,6 +56,7 @@ module BambooWorker
 
         cmd = @executable.dup
         cmd << ' run -t --rm'
+        cmd << ' -h $(hostname)'
         cmd << " -w '#{remote_path}'"
         cmd << " --entrypoint '/bin/bash'"
         cmd << " -v #{@path}:#{remote_path}"

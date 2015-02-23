@@ -18,7 +18,7 @@ jdk: 6')
     it 'should setup' do
       @java.setup
       expect(@java.nodes.map(&:to_s))
-        .to eq(["export JENV_VERSION=$(jenv versions | grep ' 1.6 ' " \
+        .to eq(["export JENV_VERSION=$(jenv versions | grep ' 1.6' " \
                 "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/'| " \
                 "sed -e 's/^[ \\t]*//')",
                 "if [[ -z \"$JENV_VERSION\" ]]; then\n  export " \
@@ -31,8 +31,8 @@ jdk: 6')
       @java.announce
       expect(@java.nodes.map(&:to_s))
         .to eq(['bamboo_cmd jenv\\ --version --echo',
-                'bamboo_cmd java\\ --version --echo',
-                'bamboo_cmd javac\\ --version --echo',
+                'bamboo_cmd java\\ -version --echo',
+                'bamboo_cmd javac\\ -version --echo',
                 'bamboo_cmd mvn\\ --version --echo'])
     end
 

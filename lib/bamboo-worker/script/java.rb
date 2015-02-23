@@ -10,7 +10,7 @@ module BambooWorker
       def setup
         super
         export('JENV_VERSION', '$(jenv versions ' \
-               "| grep ' 1.#{@config.jdk} ' " \
+               "| grep ' 1.#{@config.jdk}' " \
                "| tail -1 | sed 's/[^0-9.]*\\([0-9.]*\\).*/\\1/'" \
                "| sed -e 's/^[ \\t]*//')")
         self.if('-z "$JENV_VERSION"') do |klass|
@@ -24,8 +24,8 @@ module BambooWorker
       #
       def announce
         cmd('jenv --version', echo: true)
-        cmd('java --version', echo: true)
-        cmd('javac --version', echo: true)
+        cmd('java -version', echo: true)
+        cmd('javac -version', echo: true)
         cmd('mvn --version', echo: true)
       end
 
