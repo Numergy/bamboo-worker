@@ -51,7 +51,11 @@ module BambooWorker
 
     it 'should raise error when command failed' do
       @docker.should_receive(:system)
-        .with("/usr/bin/docker run -t --rm -h $(hostname) -w '/tmp/build'" \
+        .with('/usr/bin/docker run -t --rm' \
+              ' -e LANG=en_US.utf8' \
+              ' -e LANGUAGE=en_US.utf8' \
+              ' -e LC_ALL=en_US.utf8' \
+              " -h $(hostname) -w '/tmp/build'" \
               " --entrypoint '/bin/bash' -v test:/tmp/build " \
               '-v /tmp:/tmp/script ' \
               "'127.0.0.1:5000/ruby-builder'" \
@@ -82,7 +86,11 @@ module BambooWorker
 
     it 'should run script' do
       @docker.should_receive(:system)
-        .with("/usr/bin/docker run -t --rm -h $(hostname) -w '/tmp/build'" \
+        .with('/usr/bin/docker run -t --rm' \
+              ' -e LANG=en_US.utf8' \
+              ' -e LANGUAGE=en_US.utf8' \
+              ' -e LC_ALL=en_US.utf8' \
+              " -h $(hostname) -w '/tmp/build'" \
               " --entrypoint '/bin/bash' -v test:/tmp/build " \
               '-v /tmp:/tmp/script ' \
               "'127.0.0.1:5000/ruby-builder'" \
