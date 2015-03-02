@@ -4,17 +4,17 @@ BambooWorker::CLI.options.command 'run' do
   description 'Run bash script on worker'
   separator "\nOptions:\n"
 
-  on(:d=, :destination=, 'Destination path to saving files (default: /tmp)',
+  on(:d=, :destination=, 'Destination path to saving files.',
      default: Dir.tmpdir)
-  on(:w=, :worker=, 'Worker to use to run scripts (default: docker)',
+  on(:w=, :worker=, 'Worker to use to run scripts.',
      default: 'docker')
-  on(:c=, :config=, 'Build from file and run script (default: .travis.yml)',
+  on(:c=, :config=, 'Build from file and run script.',
      default: '.travis.yml')
 
   run do |opts, args|
-    current_dir = File.expand_path(Dir.pwd)
-    config = BambooWorker::Config.new(File.expand_path('~/.bamboo/worker.yml'))
-    project_config = Travis::Yaml.load(File.read("#{current_dir}/#{opts[:c]}"))
+    current_dir = BambooWorker::CLI.current_dir
+    config = BambooWorker::Config.new(BambooWorker::CLI.worker_config_path)
+    project_config = Travis::Yaml.load(BambooWorker::CLI.config_path(opts[:c]))
     worker =
       Object.const_get('BambooWorker')
       .const_get('Worker')

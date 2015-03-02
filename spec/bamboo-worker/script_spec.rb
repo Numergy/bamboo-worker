@@ -12,12 +12,6 @@ module BambooWorker
   describe 'Script' do
     include FakeFS::SpecHelpers
 
-    it 'should retrieve environment variable instead of parameter' do
-      stub_const('ENV', 'TRAVIS_YAML' => '.ci.yml')
-      expect { Script.new('.travis.yml') }
-        .to raise_error(ArgumentError, 'File ".ci.yml" not found')
-    end
-
     it 'should raise execption when file does not exists' do
       expect { Script.new('.travis.yml') }
         .to raise_error(ArgumentError, 'File ".travis.yml" not found')

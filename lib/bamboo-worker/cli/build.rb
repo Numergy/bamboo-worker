@@ -6,14 +6,14 @@ BambooWorker::CLI.options.command 'build' do
   description 'Build bash script from yaml file'
   separator "\nOptions:\n"
 
-  on(:c=, :config=, 'Build from file and run script (default: .travis.yml)',
+  on(:c=, :config=, 'Build from file and run script.',
      default: '.travis.yml')
-  on(:d=, :destination=, 'Destination path to saving files (default: /tmp)',
+  on(:d=, :destination=, 'Destination path to saving files.',
      default: Dir.tmpdir)
 
   run do |opts, _args|
-    current_dir = File.expand_path(Dir.pwd)
-    script = BambooWorker::Script.new("#{current_dir}/#{opts[:c]}")
+    current_dir = BambooWorker::CLI.current_dir
+    script = BambooWorker::Script.new(BambooWorker::CLI.config_path(opts[:c]))
     dir_name = File.basename(current_dir)
     idx = 0
     script.compile.each do |f|
