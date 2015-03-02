@@ -10,6 +10,7 @@ module BambooWorker
     # @param [string] file File name
     #
     def initialize(file)
+      file = ENV['TRAVIS_YAML'] if ENV.key?('TRAVIS_YAML')
       fail ArgumentError, "File \"#{file}\" not found" unless
         File.exist?(file)
 

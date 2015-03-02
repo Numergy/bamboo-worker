@@ -50,7 +50,7 @@ module BambooWorker
     end
 
     it 'should raise error when command failed' do
-      @docker.should_receive(:system)
+      allow(@docker).to receive(:system)
         .with('/usr/bin/docker run -t --rm' \
               ' -e LANG=en_US.utf8' \
               ' -e LANGUAGE=en_US.utf8' \
@@ -65,7 +65,7 @@ module BambooWorker
       Struct.new('TRAVIS_NOT_OK', :language)
 
       $CHILD_STATUS = double
-      $CHILD_STATUS.should_receive(:success?).and_return(false)
+      allow($CHILD_STATUS).to receive(:success?).and_return(false)
       config = {
         'docker' => {
           'containers' => {
@@ -85,7 +85,7 @@ module BambooWorker
     end
 
     it 'should run script' do
-      @docker.should_receive(:system)
+      allow(@docker).to receive(:system)
         .with('/usr/bin/docker run -t --rm' \
               ' -e LANG=en_US.utf8' \
               ' -e LANGUAGE=en_US.utf8' \
@@ -100,7 +100,7 @@ module BambooWorker
       Struct.new('TRAVIS_OK', :language)
 
       $CHILD_STATUS = double
-      $CHILD_STATUS.should_receive(:success?).and_return(true)
+      allow($CHILD_STATUS).to receive(:success?).and_return(true)
 
       config = {
         'docker' => {
