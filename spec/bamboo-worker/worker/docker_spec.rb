@@ -52,9 +52,9 @@ module BambooWorker
     it 'should raise error when command failed' do
       allow(@docker).to receive(:system)
         .with('/usr/bin/docker run -t --rm' \
-              ' -e LANG=en_US.utf8' \
-              ' -e LANGUAGE=en_US.utf8' \
-              ' -e LC_ALL=en_US.utf8' \
+              ' -e LANG=en_US.UTF-8' \
+              ' -e LANGUAGE=en_US.UTF-8' \
+              ' -e LC_ALL=en_US.UTF-8' \
               " -h $(hostname) -w '/tmp/build'" \
               " --entrypoint '/bin/bash' -v test:/tmp/build " \
               '-v /tmp:/tmp/script ' \
@@ -87,9 +87,9 @@ module BambooWorker
     it 'should run script' do
       allow(@docker).to receive(:system)
         .with('/usr/bin/docker run -t --rm' \
-              ' -e LANG=en_US.utf8' \
-              ' -e LANGUAGE=en_US.utf8' \
-              ' -e LC_ALL=en_US.utf8' \
+              ' -e LANG=en_US.UTF-8' \
+              ' -e LANGUAGE=en_US.UTF-8' \
+              ' -e LC_ALL=en_US.UTF-8' \
               " -h $(hostname) -w '/tmp/build'" \
               " --entrypoint '/bin/bash' -v test:/tmp/build " \
               '-v /tmp:/tmp/script ' \

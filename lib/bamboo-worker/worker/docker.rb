@@ -57,7 +57,7 @@ module BambooWorker
         cmd = @executable.dup
         cmd << ' run -t --rm'
         %w(LANG LANGUAGE LC_ALL).each do |variable|
-          cmd << " -e #{variable}=en_US.utf8"
+          cmd << " -e #{variable}=en_US.UTF-8"
         end
         cmd << ' -h $(hostname)'
         cmd << " -w '#{remote_path}'"
