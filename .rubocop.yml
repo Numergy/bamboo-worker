@@ -25,4 +25,4 @@ Metrics/PerceivedComplexity:
   Max: 10
 Metrics/AbcSize:
   Severity: warning
-  Max: 25
+  Max: 30
