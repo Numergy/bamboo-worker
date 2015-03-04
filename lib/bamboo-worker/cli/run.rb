@@ -14,7 +14,8 @@ BambooWorker::CLI.options.command 'run' do
   run do |opts, args|
     current_dir = BambooWorker::CLI.current_dir
     config = BambooWorker::Config.new(BambooWorker::CLI.worker_config_path)
-    project_config = Travis::Yaml.load(BambooWorker::CLI.config_path(opts[:c]))
+    config_path = BambooWorker::CLI.config_path(opts[:c])
+    project_config = Travis::Yaml.load(File.read(config_path))
     worker =
       Object.const_get('BambooWorker')
       .const_get('Worker')
