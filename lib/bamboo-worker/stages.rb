@@ -117,6 +117,10 @@ module BambooWorker
         @config['env']['global'].each do |line|
           custom_export(line)
         end unless @config['env']['global'].nil?
+
+        @config['env']['matrix'].each do |line|
+          custom_export(line)
+        end unless @config['env']['matrix'].nil?
       end
 
       custom_export(@config.matrix_attributes[:env]) if
