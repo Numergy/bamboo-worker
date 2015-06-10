@@ -40,13 +40,13 @@ module BambooWorker
         }
       }
 
-      expect(@docker.run('test',
-                         config,
-                         Struct::TRAVIS_ERROR.new('ruby'),
-                         '/tmp/test.sh',
-                         {},
-                         [])
-             ).to eq(false)
+      docker_run = @docker.run('test',
+                               config,
+                               Struct::TRAVIS_ERROR.new('ruby'),
+                               '/tmp/test.sh',
+                               {},
+                               [])
+      expect(docker_run).to eq(false)
     end
 
     it 'should raise error when command failed' do
