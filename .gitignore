@@ -7,3 +7,4 @@ rspec*.xml
 bamboo-worker-*.gem
 doc
 .yardoc
+.bundle

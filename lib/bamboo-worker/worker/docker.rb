@@ -24,8 +24,10 @@ module BambooWorker
       # @return [String]
       #
       def run(path, config, project_config, script, _opts, args)
-        BambooWorker::Logger.error('Config file does not contain docker key')
-        return false unless config.key?('docker')
+        unless config.key?('docker')
+          BambooWorker::Logger.error('Config file does not contain docker key')
+          return false
+        end
 
         @path = path
         @config = config['docker']
