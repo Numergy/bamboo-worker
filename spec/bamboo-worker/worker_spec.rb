@@ -2,7 +2,7 @@
 require 'spec_helper'
 require 'bamboo-worker/worker'
 
-# Template tests
+# Worker tests
 module BambooWorker
   describe 'Worker::Base' do
     include FakeFS::SpecHelpers

@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'erubis'
 require 'bamboo-worker/logger'
 
-# Template tests
+# Logger tests
 module BambooWorker
   describe 'Logger' do
     it 'should configure logger' do

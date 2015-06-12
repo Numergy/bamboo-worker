@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'bamboo-worker/worker'
 require 'bamboo-worker/worker/docker'
 
-# Template tests
+# Docker worker tests
 module BambooWorker
   describe 'Worker::Docker' do
     include FakeFS::SpecHelpers
