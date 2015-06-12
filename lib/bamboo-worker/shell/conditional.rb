@@ -46,9 +46,11 @@ module BambooWorker
       # @see BambooWorker::Shell::Node#to_s
       #
       def to_s
-        [open,
-         nodes.map(&:to_s).join("\n").indent(level),
-         close].compact.join("\n")
+        std = [open,
+               nodes.map(&:to_s).join("\n").indent(level),
+               close].compact.join("\n")
+        BambooWorker::Logger.debug(std.to_s)
+        std
       end
 
       # @see BambooWorker::Shell::Dsl#cmd

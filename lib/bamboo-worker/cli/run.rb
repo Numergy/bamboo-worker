@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# rubocop:disable Metrics/LineLength
 BambooWorker::CLI.options.command 'run' do
   banner 'Usage: bamboo-worker run [OPTIONS] [WORKER ARGS]'
   description 'Run bash script on worker'
@@ -10,8 +11,11 @@ BambooWorker::CLI.options.command 'run' do
      default: 'docker')
   on(:c=, :config=, 'Build from file and run script.',
      default: '.travis.yml')
+  on(:l=, :log_level=, 'Log level (debug, info, warn, error, fatal, unknown)',
+     default: 'info')
 
   run do |opts, args|
+    BambooWorker::Logger.level(opts[:l])
     current_dir = BambooWorker::CLI.current_dir
     config = BambooWorker::Config.new(BambooWorker::CLI.worker_config_path)
     config_path = BambooWorker::CLI.config_path(opts[:c])
@@ -21,7 +25,7 @@ BambooWorker::CLI.options.command 'run' do
       .const_get('Worker')
       .const_get(opts[:w].capitalize).new
 
-    BambooWorker::CLI.options.parse %W( build -c #{opts[:c]} -d #{opts[:d]})
+    BambooWorker::CLI.options.parse(%W( build -c #{opts[:c]} -d #{opts[:d]} -l #{opts[:l]}))
 
     files = Dir.glob("#{opts[:d]}/#{File.basename(current_dir)}*.sh")
     begin
@@ -35,12 +39,12 @@ BambooWorker::CLI.options.command 'run' do
         fail SystemCallError, 'Can not run command' unless result
       end
     rescue SystemCallError => e
-      puts 'Build failed!'
-      puts e.message
+      BambooWorker::Logger.error('Build failed!')
+      BambooWorker::Logger.error(e.message)
       exit 1
     ensure
       files.each do |file|
-        puts "Remove #{file}"
+        BambooWorker::Logger.info("Remove #{file}")
         File.unlink(file)
       end
     end

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'spec_helper'
 require 'travis/yaml'
+require 'bamboo-worker/logger'
 require 'bamboo-worker/shell'
 require 'bamboo-worker/script/default'
 require 'bamboo-worker/script/node_js'

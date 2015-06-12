@@ -13,9 +13,11 @@ module BambooWorker
       fail ArgumentError, "File \"#{file}\" not found" unless
         File.exist?(file)
 
+      BambooWorker::Logger.debug("Read #{file}")
       file_content = File.read(file)
       @stages = []
 
+      BambooWorker::Logger.debug('Build script')
       Travis::Yaml.matrix(file_content).each do |matrix|
         begin
           require "bamboo-worker/script/#{matrix.language}"
@@ -32,6 +34,7 @@ module BambooWorker
     # Compile scripts
     #
     def compile
+      BambooWorker::Logger.debug('Compile stages')
       scripts = []
       @stages.each do |stage|
         stage.builtin_stages
