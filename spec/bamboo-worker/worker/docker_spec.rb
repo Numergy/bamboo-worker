@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'bamboo-worker/worker'
 require 'bamboo-worker/worker/docker'
 
-# Template tests
+# Docker worker tests
 module BambooWorker
   describe 'Worker::Docker' do
     include FakeFS::SpecHelpers
@@ -14,6 +14,7 @@ module BambooWorker
       File.open('/usr/bin/docker', 'w+') { |f| f.write(true) }
       File.chmod(0755, '/usr/bin/docker')
       @docker = Worker::Docker.new
+      allow(BambooWorker::Logger).to receive(:error)
     end
 
     it 'should initialize docker binary' do

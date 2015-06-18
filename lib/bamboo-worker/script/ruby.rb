@@ -5,6 +5,11 @@ module BambooWorker
   class Script
     # Ruby language
     class Ruby < Default
+      ##
+      # Default configuration for ruby
+      #
+      # @return [Hash]
+      #
       DEFAULTS = {
         'gemfile' => 'Gemfile'
       }

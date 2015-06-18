@@ -8,7 +8,7 @@ require 'bamboo-worker/stages'
 require 'bamboo-worker/script/default'
 require 'bamboo-worker/script/ruby'
 
-# Template tests
+# Stages tests
 module BambooWorker
   describe 'Stages' do
     include FakeFS::SpecHelpers

@@ -24,7 +24,10 @@ module BambooWorker
       # @return [String]
       #
       def run(path, config, project_config, script, _opts, args)
-        return false unless config.key?('docker')
+        unless config.key?('docker')
+          BambooWorker::Logger.error('Config file does not contain docker key')
+          return false
+        end
 
         @path = path
         @config = config['docker']
@@ -33,6 +36,8 @@ module BambooWorker
         command = docker_command(script, args)
         return false unless command
 
+        BambooWorker::Logger.debug('Run docker command:')
+        BambooWorker::Logger.debug(command)
         system(command)
         fail SystemCallError, 'System failed' unless $CHILD_STATUS.success?
         true
@@ -52,7 +57,10 @@ module BambooWorker
         remote_path = '/tmp/build'
         script_path = '/tmp/script'
 
-        return false if container.nil?
+        if container.nil?
+          BambooWorker::Logger.error('Container not found')
+          return false
+        end
 
         cmd = @executable.dup
         cmd << ' run -t --rm'
