@@ -78,6 +78,7 @@ $ bamboo-worker run -d .. -c .bamboo.yml -l debug -v '/home/user/.ssh:/root/.ssh
 ### Docker container
 
 A configuration file (`~/.bamboo/worker.yml`) is needed to use docker worker.
+
 ```
 docker:
   containers:
@@ -86,6 +87,23 @@ docker:
     node_js: 'repo.numergy.ci:5000/node_js-builder'
     php: 'repo.numergy.ci:5000/php-builder'
     java: 'repo.numergy.ci:5000/java-builder'
+```
+
+Or directly in your yaml file:
+
+```
+language: ruby
+
+docker:
+  container: repo.numergy.ci:5000/custom_container
+
+rvm:
+  - 2.0.0
+  - 2.1.0
+
+script:
+  - bundle exec rake
+
 ```
 
 ### Running tests
