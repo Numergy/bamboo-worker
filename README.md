@@ -103,7 +103,6 @@ rvm:
 
 script:
   - bundle exec rake
-
 ```
 
 ### Running tests
