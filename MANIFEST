@@ -14,6 +14,7 @@ lib/bamboo-worker/cli/build.rb
 lib/bamboo-worker/cli/run.rb
 lib/bamboo-worker/config.rb
 lib/bamboo-worker/core/string/indent.rb
+lib/bamboo-worker/logger.rb
 lib/bamboo-worker/script.rb
 lib/bamboo-worker/script/default.rb
 lib/bamboo-worker/script/java.rb
@@ -34,9 +35,11 @@ lib/bamboo-worker/template.rb
 lib/bamboo-worker/version.rb
 lib/bamboo-worker/worker.rb
 lib/bamboo-worker/worker/docker.rb
+lib/travis/yaml/nodes/docker.rb
 spec/bamboo-worker/cli_spec.rb
 spec/bamboo-worker/config_spec.rb
 spec/bamboo-worker/core/string/indent_spec.rb
+spec/bamboo-worker/logger_spec.rb
 spec/bamboo-worker/script/java_spec.rb
 spec/bamboo-worker/script/node_js_spec.rb
 spec/bamboo-worker/script/php_spec.rb
