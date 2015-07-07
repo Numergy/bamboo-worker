@@ -33,7 +33,6 @@ module BambooWorker
     end
 
     it 'should return false if container wasn\'t found' do
-      Struct.new('TRAVIS_ERROR', :language)
       config = {
         'docker' => {
           'azdoazdazd' => {
@@ -41,9 +40,13 @@ module BambooWorker
         }
       }
 
+      travis = Struct.new(:language)
+      project_config = travis.new('ruby')
+      allow(project_config).to receive(:key?).and_return(false)
+
       docker_run = @docker.run('test',
                                config,
-                               Struct::TRAVIS_ERROR.new('ruby'),
+                               project_config,
                                '/tmp/test.sh',
                                {},
                                [])
@@ -63,8 +66,6 @@ module BambooWorker
               " --login -c 'chmod +x /tmp/script/test.sh; /tmp/script/test.sh'")
         .and_return(true)
 
-      Struct.new('TRAVIS_NOT_OK', :language)
-
       $CHILD_STATUS = double
       allow($CHILD_STATUS).to receive(:success?).and_return(false)
       config = {
@@ -75,10 +76,14 @@ module BambooWorker
         }
       }
 
+      travis = Struct.new(:language)
+      project_config = travis.new('ruby')
+      allow(project_config).to receive(:key?).and_return(false)
+
       expect do
         @docker.run('test',
                     config,
-                    Struct::TRAVIS_NOT_OK.new('ruby'),
+                    project_config,
                     '/tmp/test.sh',
                     {},
                     [])
@@ -98,8 +103,6 @@ module BambooWorker
               " --login -c 'chmod +x /tmp/script/test.sh; /tmp/script/test.sh'")
         .and_return(true)
 
-      Struct.new('TRAVIS_OK', :language)
-
       $CHILD_STATUS = double
       allow($CHILD_STATUS).to receive(:success?).and_return(true)
 
@@ -111,9 +114,44 @@ module BambooWorker
         }
       }
 
+      travis = Struct.new(:language)
+      project_config = travis.new('ruby')
+      allow(project_config).to receive(:key?).and_return(false)
       expect(@docker.run('test',
                          config,
-                         Struct::TRAVIS_OK.new('ruby'),
+                         project_config,
+                         '/tmp/test.sh',
+                         { r: '127.0.0.1',
+                           p: 5000 },
+                         []))
+        .to eq(true)
+    end
+
+    it 'should run script with custom container' do
+      allow(@docker).to receive(:system)
+        .with('/usr/bin/docker run -t --rm' \
+              ' -e LANG=en_US.UTF-8' \
+              ' -e LANGUAGE=en_US.UTF-8' \
+              ' -e LC_ALL=en_US.UTF-8' \
+              " -h $(hostname) -w '/tmp/build'" \
+              " --entrypoint '/bin/bash' -v test:/tmp/build " \
+              '-v /tmp:/tmp/script ' \
+              "'10.0.0.1:5000/my-container'" \
+              " --login -c 'chmod +x /tmp/script/test.sh; /tmp/script/test.sh'")
+        .and_return(true)
+
+      $CHILD_STATUS = double
+      allow($CHILD_STATUS).to receive(:success?).and_return(true)
+
+      config = {}
+      travis = Struct.new(:language, :docker)
+      project_config = travis.new('ruby',
+                                  'container' => '10.0.0.1:5000/my-container')
+      allow(project_config).to receive(:key?).with('docker').and_return(true)
+
+      expect(@docker.run('test',
+                         config,
+                         project_config,
                          '/tmp/test.sh',
                          { r: '127.0.0.1',
                            p: 5000 },

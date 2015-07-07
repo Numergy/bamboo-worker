@@ -24,13 +24,14 @@ module BambooWorker
       # @return [String]
       #
       def run(path, config, project_config, script, _opts, args)
-        unless config.key?('docker')
-          BambooWorker::Logger.error('Config file does not contain docker key')
+        if !config.key?('docker') && !project_config.key?('docker')
+          BambooWorker::Logger
+            .error('Config or yaml file do not contains docker key.')
           return false
         end
 
         @path = path
-        @config = config['docker']
+        @config = config.key?('docker') ? config['docker'] : nil
         @project_config = project_config
 
         command = docker_command(script, args)
@@ -62,6 +63,8 @@ module BambooWorker
           return false
         end
 
+        BambooWorker::Logger.info("Using container: #{container}")
+
         cmd = @executable.dup
         cmd << ' run -t --rm'
         %w(LANG LANGUAGE LC_ALL).each do |variable|
@@ -86,6 +89,10 @@ module BambooWorker
       #
       # @return [String]
       def container
+        return @project_config['docker']['container'] if
+          @project_config.key?('docker') &&
+          @project_config['docker'].key?('container')
+
         @config['containers'][@project_config.language.to_s] if
           @config.key?('containers') &&
           @config['containers'].key?(@project_config.language.to_s)
