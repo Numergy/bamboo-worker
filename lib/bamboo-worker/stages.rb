@@ -146,7 +146,7 @@ module BambooWorker
     # After result
     #
     def after_result
-      raw 'bamboo_result $?'
+      raw 'bamboo_result'
       self.if('$BAMBOO_TEST_RESULT = 0') do |klass|
         build_custom_stage('after_success', klass)
       end if config['after_success']

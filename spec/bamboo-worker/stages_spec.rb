@@ -96,7 +96,7 @@ after_script:
                    'bamboo_cmd script_command_1 --assert --echo',
                    'bamboo_cmd script_command_2 --assert --echo',
                    'export BAMBOO_STAGE=after_result',
-                   'bamboo_result $?',
+                   'bamboo_result',
                    "if [[ $BAMBOO_TEST_RESULT = 0 ]]; then\n  " \
                    "bamboo_cmd success_command_1 --echo\n  " \
                    "bamboo_cmd success_command_2 --echo\nfi",
