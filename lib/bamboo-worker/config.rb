@@ -26,7 +26,7 @@ module BambooWorker
       end
 
       content = File.read(@config_file)
-      self.merge!(YAML.load(File.read(@config_file))) unless content.empty?
+      merge!(YAML.load(File.read(@config_file))) unless content.empty?
     end
 
     ##

@@ -10,7 +10,7 @@ module BambooWorker
     SLOP_OPTIONS = {
       help: true,
       banner: 'Usage: bamboo-worker [COMMAND] [OPTIONS]'
-    }
+    }.freeze
 
     ##
     # @return [Slop]

@@ -14,7 +14,7 @@ module BambooWorker
       # @param [String] executable Executable script for the worker
       #
       def initialize(executable)
-        fail "Can't find executable #{executable}, or is not executable." unless
+        raise "Can't find executable #{executable}, or isn't executable." unless
           File.executable?(executable)
         @executable = executable
       end
@@ -29,7 +29,7 @@ module BambooWorker
       # @param [Array] _args worker's specific arguments
       #
       def run(_path, _config, _project_config, _script, _opts, _args)
-        fail NotImplementedError
+        raise NotImplementedError
       end
     end
   end

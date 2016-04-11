@@ -10,7 +10,7 @@ module BambooWorker
     # @param [string] file File name
     #
     def initialize(file)
-      fail ArgumentError, "File \"#{file}\" not found" unless
+      raise ArgumentError, "File \"#{file}\" not found" unless
         File.exist?(file)
 
       BambooWorker::Logger.debug("Read #{file}")

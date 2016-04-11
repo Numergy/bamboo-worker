@@ -40,7 +40,7 @@ module BambooWorker
         BambooWorker::Logger.debug('Run docker command:')
         BambooWorker::Logger.debug(command)
         system(command)
-        fail SystemCallError, 'System failed' unless $CHILD_STATUS.success?
+        raise SystemCallError, 'System failed' unless $CHILD_STATUS.success?
         true
       end
 

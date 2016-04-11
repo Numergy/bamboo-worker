@@ -15,7 +15,7 @@ module BambooWorker
       'error' => ::Logger::ERROR,
       'fatal' => ::Logger::FATAL,
       'unknown' => ::Logger::UNKNOWN
-    }
+    }.freeze
 
     attr_reader :logger
 

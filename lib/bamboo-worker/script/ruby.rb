@@ -12,7 +12,7 @@ module BambooWorker
       #
       DEFAULTS = {
         'gemfile' => 'Gemfile'
-      }
+      }.freeze
 
       # Setup language with rbenv
       #

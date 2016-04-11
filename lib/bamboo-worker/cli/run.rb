@@ -20,10 +20,9 @@ BambooWorker::CLI.options.command 'run' do
     config = BambooWorker::Config.new(BambooWorker::CLI.worker_config_path)
     config_path = BambooWorker::CLI.config_path(opts[:c])
     project_config = Travis::Yaml.load(File.read(config_path))
-    worker =
-      Object.const_get('BambooWorker')
-      .const_get('Worker')
-      .const_get(opts[:w].capitalize).new
+    worker = Object.const_get('BambooWorker')
+                   .const_get('Worker')
+                   .const_get(opts[:w].capitalize).new
 
     BambooWorker::CLI.options.parse(%W( build -c #{opts[:c]} -d #{opts[:d]} -l #{opts[:l]}))
 
@@ -36,7 +35,7 @@ BambooWorker::CLI.options.command 'run' do
                             file,
                             opts,
                             args)
-        fail SystemCallError, 'Can not run command' unless result
+        raise SystemCallError, 'Can not run command' unless result
       end
     rescue SystemCallError => e
       BambooWorker::Logger.error('Build failed!')

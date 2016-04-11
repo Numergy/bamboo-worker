@@ -41,7 +41,7 @@ module BambooWorker
                :script,
                :after_script,
                :after_result]
-    }
+    }.freeze
 
     # Initialize script
     #
