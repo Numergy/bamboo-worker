@@ -1,4 +1,4 @@
-# Bamboo Worker
+# Bamboo Worker | [![Build Status](https://travis-ci.org/Numergy/bamboo-worker.svg?branch=master)](https://travis-ci.org/Numergy/bamboo-worker)
 
 Convert an yaml file into a shell script and run them into a docker container.
 
