@@ -24,7 +24,7 @@ BambooWorker::CLI.options.command 'run' do
                    .const_get('Worker')
                    .const_get(opts[:w].capitalize).new
 
-    BambooWorker::CLI.options.parse(%W( build -c #{opts[:c]} -d #{opts[:d]} -l #{opts[:l]}))
+    BambooWorker::CLI.options.parse(%W(build -c #{opts[:c]} -d #{opts[:d]} -l #{opts[:l]}))
 
     files = Dir.glob("#{opts[:d]}/#{File.basename(current_dir)}*.sh")
     begin
