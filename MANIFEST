@@ -17,6 +17,7 @@ lib/bamboo-worker/core/string/indent.rb
 lib/bamboo-worker/logger.rb
 lib/bamboo-worker/script.rb
 lib/bamboo-worker/script/default.rb
+lib/bamboo-worker/script/generic.rb
 lib/bamboo-worker/script/java.rb
 lib/bamboo-worker/script/node_js.rb
 lib/bamboo-worker/script/php.rb
