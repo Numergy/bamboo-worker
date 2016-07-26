@@ -24,7 +24,7 @@ module BambooWorker
       #
       def to_s
         BambooWorker::Logger.debug(code.indent(@level)) if
-          is_a?(::BambooWorker::Shell::Cmd) && @level == 0
+          is_a?(::BambooWorker::Shell::Cmd) && @level.zero?
         code.indent(@level)
       end
 
