@@ -34,13 +34,22 @@ module BambooWorker
         @config = config.key?('docker') ? config['docker'] : nil
         @project_config = project_config
 
+        mattermost = config.key?('mattermost') ? config['mattermost'] : nil
+        if mattermost
+          mattermost = BambooWorker::Notification::Mattermost.new(mattermost)
+        end
+
         command = docker_command(script, args)
         return false unless command
 
         BambooWorker::Logger.debug('Run docker command:')
         BambooWorker::Logger.debug(command)
         system(command)
-        raise SystemCallError, 'System failed' unless $CHILD_STATUS.success?
+        unless $CHILD_STATUS.success?
+          mattermost.notify(false) if mattermost
+          raise SystemCallError, 'System failed'
+        end
+        mattermost.notify(true) if mattermost
         true
       end
 
