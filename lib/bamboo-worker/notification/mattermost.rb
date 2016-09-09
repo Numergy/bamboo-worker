@@ -44,6 +44,7 @@ module BambooWorker
           msg << "[#{ENV['bamboo_buildResultKey']}]"
           msg << "(#{ENV['bamboo_buildResultsUrl']}) "
           msg << "#{ENV['bamboo_planName']} "
+          msg << "[[commits](#{ENV['bamboo_buildResultsUrl']}/commit)] "
           msg << "[[logs](#{ENV['bamboo_buildResultsUrl']}/log)] "
           msg << "[[tests](#{ENV['bamboo_buildResultsUrl']}/test)] "
           msg << "[[artifacts](#{ENV['bamboo_buildResultsUrl']}/artifact)] "
